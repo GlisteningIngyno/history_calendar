@@ -18,6 +18,8 @@ Window {
             Layout.fillWidth: true
             Layout.preferredHeight: 50
             Layout.margins: 1
+            antialiasing: true
+
             function createEllipse() {
                 const context = getContext("2d")
 
@@ -64,24 +66,116 @@ Window {
                 width: 300
                 height: 200
                 color: "white"
+                border.color: "#00cec9"
+                border.width: 3
+                radius: 10
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.columnSpan: 2
-                Layout.margins: 5
-                ColumnLayout {
-                    spacing: 10
-                    Text {
-                        id: txtRectangle1
-                        text: qsTr("Текущая дата")
+                GridLayout {
+                    columns: 3
+                    rows: 3
+                    anchors.fill: parent
+                    columnSpacing: 3
+                    rowSpacing: 3
+                    Rectangle {
+                        antialiasing: true
+                        color: "#81ecec"
+                        border.color: "#00cec9"
+                        border.width: 2
+                        radius: 10
+                        height: 100
+                        width: 100
+                        Layout.row: 0
+                        Layout.column: 1
+                        Layout.fillWidth: true
+                        Text {
+                            id: txt1
+                            text: qsTr("2026-08-28")
+                            font.pixelSize: 40
+                        }
                     }
-                    Text {
-                        id: txtRectangle2
-                        text: qsTr("Дата прошлого")
+                    Rectangle {
+                        antialiasing: true
+                        color: "#81ecec"
+                        border.color: "#00cec9"
+                        border.width: 2
+                        radius: 10
+                        height: 100
+                        width: 100
+                        Layout.row: 1
+                        Layout.column: 0
+                        Layout.fillWidth: true
+                        Text {
+                            id: txt2
+                            text: qsTr("1026-08-28")
+                            font.pixelSize: 40
+                        }
                     }
-                    Text {
-                        id: txtRectangle3
-                        text: qsTr("Историческое событие")
+                    Rectangle {
+                        antialiasing: true
+                        color: "#81ecec"
+                        border.color: "#00cec9"
+                        border.width: 2
+                        radius: 10
+                        height: 100
+                        width: 100
+                        Layout.row: 1
+                        Layout.column: 2
+                        Layout.fillWidth: true
+                        Text {
+                            id: txt3
+                            text: qsTr("Winner")
+                            font.pixelSize: 40
+                        }
                     }
+                    Button {
+                        antialiasing: true
+                        // color: "#81ecec"
+                        // border.color: "#00cec9"
+                        // border.width: 2
+                        // radius: 10
+                        height: 100
+                        width: 100
+                        Layout.row: 2
+                        Layout.column: 1
+                        Layout.preferredHeight: 60
+                        Layout.fillWidth: true
+                        text: "-->"
+                        // Layout.fillHeight: true
+                    }
+                    // Text {
+                    //     id: txtRectangle1
+                    //     text: qsTr("Текущая дата")
+                    //     font.pixelSize: 15
+                    //     Layout.row: 0
+                    //     Layout.column: 1
+                    //     Layout.fillWidth: true
+                    // }
+                    // Text {==
+                    //     id: txtRectangle2
+                    //     font.pixelSize: 15
+                    //     text: qsTr("Дата прошлого")
+                    //     Layout.row: 1
+                    //     Layout.column: 0
+                    //     Layout.fillWidth: true
+                    // }
+                    // Text {
+                    //     id: txtRectangle3
+                    //     text: qsTr("Историческое событие")
+                    //     font.pixelSize: 15
+                    //     Layout.row: 1
+                    //     Layout.column: 2
+                    //     Layout.fillWidth: true
+                    // }
+                    // Button {
+                    //     text: "-->"
+                    //     font.pixelSize: 15
+
+                    //     Layout.row: 2
+                    //     Layout.column: 1
+                    //     Layout.fillWidth: true
+                    // }
                 }
             }
             Button {
@@ -90,10 +184,7 @@ Window {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.margins: 5
-                Text {
-                    id: btSettings
-                    text: qsTr("Настройки")
-                }
+                text: qsTr("Настройки")
             }
             Button {
                 width: 50
@@ -101,10 +192,7 @@ Window {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.margins: 5
-                Text {
-                    id: btManual
-                    text: qsTr("Справка")
-                }
+                text: qsTr("Справка")
             }
         }
     }
