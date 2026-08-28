@@ -9,21 +9,21 @@ Window {
     title: qsTr("History Сalendar")
     color: "#e9d1af"
     ColumnLayout {
-        id: сolumnLayout
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: 100
+        id: columnLayout
+        anchors.fill: parent
 
-        spacing: 100
+        spacing: 10
         Canvas {
-            anchors.fill: parent
+            //надо исправялть, на Layout
+            Layout.fillWidth: true
+            Layout.preferredHeight: 50
+            Layout.margins: 1
             function createEllipse() {
                 const context = getContext("2d")
 
                 var radius = 5
                 //переменная для C++ под размер окна
-                for (var i = 10; i < 640; i += 20) {
+                for (var i = 10; i < width; i += 20) {
 
                     var topX = i
                     var topY = 10
@@ -51,34 +51,60 @@ Window {
             onPaint: createEllipse()
         }
         GridLayout {
-            anchors.top: сolumnLayout.bottom
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
+            columns: 2
+            rows: 2
+            rowSpacing: 10
+            columnSpacing: 300
 
-            columns: 2 // два столбца
-            rows: 2 // две строки
-            columnSpacing: 480
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.margins: 5
 
-            Canvas {
+            Rectangle {
+                width: 300
+                height: 200
+                color: "white"
+                Layout.fillWidth: true
+                Layout.fillHeight: true
                 Layout.columnSpan: 2
-                Layout.preferredHeight: 300
-                Layout.preferredWidth: 640
-                onPaint: {
-                    const context = getContext("2d")
-                    context.strokeRect(10, 10, 620, 250)
+                Layout.margins: 5
+                ColumnLayout {
+                    spacing: 10
+                    Text {
+                        id: txtRectangle1
+                        text: qsTr("Текущая дата")
+                    }
+                    Text {
+                        id: txtRectangle2
+                        text: qsTr("Дата прошлого")
+                    }
+                    Text {
+                        id: txtRectangle3
+                        text: qsTr("Историческое событие")
+                    }
                 }
             }
-
             Button {
-                Layout.preferredHeight: 80
-                Layout.preferredWidth: 80
-                text: "Настройки"
+                width: 50
+                height: 50
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.margins: 5
+                Text {
+                    id: btSettings
+                    text: qsTr("Настройки")
+                }
             }
             Button {
-                Layout.preferredHeight: 80
-                Layout.preferredWidth: 80
-                text: "Справка"
+                width: 50
+                height: 50
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.margins: 5
+                Text {
+                    id: btManual
+                    text: qsTr("Справка")
+                }
             }
         }
     }
