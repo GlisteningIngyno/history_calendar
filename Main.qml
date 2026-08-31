@@ -78,7 +78,7 @@ Window {
                     Layout.margins: 5
                     Text {
                         id: txtTuesday
-                        text: qsTr("2026-08-29")
+                        text: tuesdayDate
                         color: "#2A5722"
                         wrapMode: Text.Wrap
                         horizontalAlignment: Text.AlignHCenter
@@ -92,7 +92,7 @@ Window {
                     }
                     Text {
                         id: txtYesterday
-                        text: qsTr("1883-08-29")
+                        text: yesterdayDate
                         color: "#2A5722"
                         wrapMode: Text.Wrap
                         horizontalAlignment: Text.AlignHCenter
@@ -106,7 +106,7 @@ Window {
                     }
                     Text {
                         id: txtEvnt
-                        text: qsTr("В Оттаве канадский изобретатель и бизнесмен Томас Ахерн продемонстрировал первую электроплиту.")
+                        text: eventDate
                         color: "#2A5722"
                         wrapMode: Text.Wrap
                         horizontalAlignment: Text.AlignHCenter

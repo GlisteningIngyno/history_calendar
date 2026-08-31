@@ -4,7 +4,7 @@ project(HistoryProject2 VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.4 REQUIRED COMPONENTS Quick)
+find_package(Qt6 6.4 REQUIRED COMPONENTS Quick Sql)
 
 qt_standard_project_setup()
 
@@ -39,6 +39,7 @@ set_target_properties(appHistoryProject2 PROPERTIES
 
 target_link_libraries(appHistoryProject2
     PRIVATE Qt6::Quick
+    PRIVATE Qt6::Sql
 )
 
 include(GNUInstallDirs)
