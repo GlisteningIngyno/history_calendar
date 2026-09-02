@@ -14,7 +14,7 @@
 void initDatabase();
 void addEventDatebase();
 void deleteEventDatebase();
-QString printEventDateBase();
+QString printEventDateBase(QString dateYesterday);
 
 int main(int argc, char *argv[])
 {
@@ -39,14 +39,13 @@ int main(int argc, char *argv[])
     initDatabase();
     // addEventDatebase();
     // deleteEventDatebase();
-    QString eventStr = printEventDateBase();
+    QString eventStr = printEventDateBase(dateYesterday.toString("yyyy-MM-dd"));
     engine.rootContext()->setContextProperty("eventDate",eventStr);
-
-
     engine.load(url);
 
     return app.exec();
 }
+
 QString getDatabasePath() {
     QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir dir;
@@ -111,7 +110,7 @@ void deleteEventDatebase(){
         qDebug() << "Событие удалено!";
     }
 }
-QString printEventDateBase(){
+QString printEventDateBase(QString dateYesterday){
     QString country;
     QSqlDatabase db = QSqlDatabase::database();
     if (!db.isOpen()) {
@@ -120,13 +119,21 @@ QString printEventDateBase(){
             return "Ошибка открытия БД";
         }
     }
-    QSqlQuery query(db);
 
-    if (!query.exec("SELECT event_text FROM events")) {
+    QSqlQuery query(db);
+    query.prepare("SELECT event_text FROM events WHERE event_date = :dateYesterday");
+    query.bindValue(":dateYesterday", dateYesterday);
+    if (!query.exec()) {
         qDebug() << "Ошибка вывода данных:" << query.lastError().text();
+        return "Ошибка выполнения";
     }
     if(query.first()){
         country = query.value(0).toString();
+        qDebug() << "Успешное выполнение" << query.lastError().text();
+
+    }else{
+        qDebug() << "События на " << dateYesterday << " нет";
+        return "События на дату нет";
     }
     return country;
 }
