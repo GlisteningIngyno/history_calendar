@@ -10,6 +10,7 @@
 #include <QStandardPaths>
 #include <QDebug>
 
+#include <clicker.h>
 
 void initDatabase();
 void addEventDatebase();
@@ -26,6 +27,9 @@ int main(int argc, char *argv[])
     QDate dateDay = QDate::currentDate();
     engine.rootContext()->setContextProperty("tuesdayDate", dateDay.toString("yyyy-MM-dd"));
 
+    qmlRegisterType<clicker>("clicker", 1, 0,"Clicker");
+
+
     int current = QRandomGenerator::global()->bounded(1,121);
     int yyTuesday =  dateDay.year()-current;
     int mmTuesday = dateDay.month();
@@ -34,14 +38,25 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("yesterdayDate", dateYesterday.toString("yyyy-MM-dd"));
 
 
-    //Произвести поиск даты в БД и вывести ее на экран
-    //Рассмотреть выбор SQLlite
     initDatabase();
     // addEventDatebase();
     // deleteEventDatebase();
     QString eventStr = printEventDateBase(dateYesterday.toString("yyyy-MM-dd"));
     engine.rootContext()->setContextProperty("eventDate",eventStr);
     engine.load(url);
+
+    //РАБОТАЕТ ТОЛЬКО ОДИН РАЗ И СТАТИЧНО
+    //НЕОБХОДИМО ИСПОЛЬЗОВАТЬ СИГНАЛЫ И СЛОТЫ
+    // QObject* window = engine.rootObjects().first();
+    // QObject* object = window->findChild<QObject*>("flip");
+    // bool flipped = false;
+    // if(object){
+    //     flipped = object->property("flipped").toBool();
+    //     if(!flipped) {
+    //         QString eventStr = printEventDateBase(dateYesterday.toString("yyyy-MM-dd"));
+    //         engine.rootContext()->setContextProperty("eventDate",eventStr);
+    //     }
+    // }
 
     return app.exec();
 }

@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import clicker
 
 Window {
     //Для анимации используем Flipable
@@ -9,6 +10,9 @@ Window {
     visible: true
     title: qsTr("History Сalendar")
     color: "#D8FFD1"
+    Clicker {
+        id: clicker
+    }
     ColumnLayout {
         id: columnLayout
         anchors.fill: parent
@@ -62,6 +66,7 @@ Window {
             Layout.margins: 20
             Flipable {
                 id: flipable
+                // objectName: "flip"
                 Layout.fillHeight: parent
                 Layout.fillWidth: parent
                 Layout.columnSpan: 2
@@ -179,13 +184,14 @@ Window {
                         }
                     }
                 }
+
                 transform: Rotation {
                     id: rotation
                     origin.x: flipable.width / 2
                     origin.y: flipable.height / 2
                     axis {
-                        x: 1
-                        y: 0
+                        x: 0
+                        y: 1
                         z: 0
                         //Для исчезновения листа
                         // x: 1
@@ -210,8 +216,12 @@ Window {
                     }
                 }
                 MouseArea {
+                    objectName: "mouseArea"
                     anchors.fill: parent
-                    onClicked: flipable.flipped = !flipable.flipped
+                    onClicked: {
+                        flipable.flipped = !flipable.flipped
+                        clicker.clicked()
+                    }
                 }
             }
             Button {
@@ -233,6 +243,14 @@ Window {
                     border.width: 2.0
                     border.color: "#2A5722"
                 }
+            }
+            function onValueChaged(newValue) {
+                txtYesterday_.text = newValue
+                txtYesterday.text = newValue
+            }
+
+            Component.onCompleted: {
+                clicker.onClicked_two.connect(onValueChaged)
             }
             Button {
                 id: manualButton
