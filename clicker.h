@@ -10,13 +10,17 @@ class clicker : public QObject
 public:
     clicker(QObject *object = nullptr);
 
-    Q_INVOKABLE void clicked();
+    Q_INVOKABLE void clickYesterday();
+    Q_INVOKABLE void clickEvent(QString dateYesterday);
+
 
 signals:
-    void onClicked_two(QString);
-
+    void onClickYesterday(QString);
+    void onClickEvent(QString);
 private:
     QString value{};
+    QString event{};
+
 };
 
 #endif // CLICKER_H

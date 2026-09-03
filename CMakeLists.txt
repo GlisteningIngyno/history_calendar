@@ -23,6 +23,7 @@ qt_add_qml_module(appHistoryProject2
         icons/info.svg
         icons/info2.svg
         SOURCES clicker.h clicker.cpp
+        SOURCES database.h database.cpp
         # SOURCES sqlmyversion.h sqlmyversion.cpp
 
 )
