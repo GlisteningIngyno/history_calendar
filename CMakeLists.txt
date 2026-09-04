@@ -19,12 +19,15 @@ qt_add_qml_module(appHistoryProject2
     QML_FILES
         Main.qml
     RESOURCES
-        icons/cog.svg
-        icons/info.svg
-        icons/info2.svg
+        #ОБЯЗАТЕЛЬНО поменить в репозитории Иконки
+        icons/cog.svg #https://pautina.io/
+        icons/info2.svg #https://icon-icons.com/ru/authors/1060-brankic1979
+        icons/house.svg #https://pautina.io/
         SOURCES clicker.h clicker.cpp
         SOURCES database.h database.cpp
-        # SOURCES sqlmyversion.h sqlmyversion.cpp
+        QML_FILES SettingPage.qml
+        QML_FILES InfoPage.qml
+        QML_FILES customcomponent/CustomButton.qml
 
 )
 

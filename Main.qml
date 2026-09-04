@@ -15,7 +15,7 @@ ApplicationWindow {
         id: clicker
     }
     StackView {
-        id: stackView
+        id: stackViewTop
         anchors.fill: parent
         initialItem: mainPage
     }
@@ -264,7 +264,7 @@ ApplicationWindow {
                         border.color: "#2A5722"
                     }
                     onClicked: {
-                        stackView.push(settingPage)
+                        stackViewTop.push(settingPage)
                     }
                 }
 
@@ -288,7 +288,7 @@ ApplicationWindow {
                         border.color: "#2A5722"
                     }
                     onClicked: {
-                        stackView.push(infoPages)
+                        stackViewTop.push(infoPages)
                     }
                 }
             }
@@ -297,102 +297,14 @@ ApplicationWindow {
 
     Component {
         id: settingPage
-        Rectangle {
-            color: "#A1FA91"
-            border.color: "#2A5722"
-            border.width: 3
-            ColumnLayout {
-                anchors.fill: parent
-                TableModel {
-                    id: eventDateTable
-                    TableModelColumn {
-                        display: "name"
-                    }
-                    TableModelColumn {
-                        display: "age"
-                    }
-                    rows: [{
-                            "name": "Tom",
-                            "age": 39
-                        }, {
-                            "name": "Bob",
-                            "age": 43
-                        }, {
-                            "name": "Sam",
-                            "age": 28
-                        }]
-                }
-                TableView {
-                    model: eventDateTable
-                    Layout.fillWidth: parent
-                    Layout.fillHeight: parent
-                    Layout.margins: 10
-                    delegate: Text {
-                        text: model.display
-                    }
-                }
-
-                Button {
-                    Layout.margins: 10
-                    background: Rectangle {
-                        implicitWidth: 32
-                        implicitHeight: 32
-                        color: "aqua"
-                    }
-                    onClicked: {
-                        stackView.pop()
-                    }
-                }
-            }
+        SettingPage {
+            stackView: stackViewTop
         }
     }
     Component {
         id: infoPages
-        Rectangle {
-            color: "#A1FA91"
-            ColumnLayout {
-                anchors.fill: parent
-                TableModel {
-                    id: eventDateTable
-                    TableModelColumn {
-                        display: "name"
-                    }
-                    TableModelColumn {
-                        display: "age"
-                    }
-                    rows: [{
-                            "name": "Tom",
-                            "age": 39
-                        }, {
-                            "name": "Bob",
-                            "age": 43
-                        }, {
-                            "name": "Sam",
-                            "age": 28
-                        }]
-                }
-                TableView {
-                    model: eventDateTable
-                    Layout.fillWidth: parent
-                    Layout.fillHeight: parent
-                    Layout.margins: 10
-                    delegate: Text {
-                        text: model.display
-                    }
-                }
-
-                Button {
-                    Layout.margins: 10
-                    background: Rectangle {
-                        implicitWidth: 32
-                        implicitHeight: 32
-                        color: "aqua"
-                    }
-                    onClicked: {
-                        stackView.pop()
-                    }
-                }
-            }
+        InfoPage {
+            stackView: stackViewTop
         }
     }
 }
