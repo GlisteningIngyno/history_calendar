@@ -7,7 +7,7 @@
 #include <QDebug>
 
 
-database::database() {}
+database::database(QObject *object): QObject(object) {}
 
 QString getDatabasePath() {
     QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
@@ -36,43 +36,6 @@ void initDatabase() {
     }
     db.close();
 }
-void addEventDatebase(){
-    QSqlDatabase db = QSqlDatabase::database();
-    if (!db.isOpen()) {
-        if (!db.open()) {
-            qDebug() << "Ошибка открытия БД:" << db.lastError().text();
-            return;
-        }
-    }
-    QSqlQuery query(db);
-    query.prepare("INSERT INTO events (event_date, event_text) VALUES (:date, :text)");
-    query.bindValue(":date", "2026-08-31");
-    query.bindValue(":text", "В Оттаве канадский изобретатель и бизнесмен Томас Ахерн продемонстрировал первую электроплиту.");
-
-    if (!query.exec()) {
-        qDebug() << "Ошибка добавления:" << query.lastError().text();
-    } else {
-        qDebug() << "Событие добавлено!";
-    }
-}
-void deleteEventDatebase(){
-    QSqlDatabase db = QSqlDatabase::database();
-    if (!db.isOpen()) {
-        if (!db.open()) {
-            qDebug() << "Ошибка открытия БД:" << db.lastError().text();
-            return;
-        }
-    }
-    QSqlQuery query(db);
-    query.prepare("DELETE FROM events WHERE event_date = (:date)");
-    query.bindValue(":date","2026-08-31");
-
-    if (!query.exec()) {
-        qDebug() << "Ошибка удаления:" << query.lastError().text();
-    } else {
-        qDebug() << "Событие удалено!";
-    }
-}
 QString printEventDateBase(QString dateYesterday){
     QString country;
     QSqlDatabase db = QSqlDatabase::database();
@@ -100,3 +63,47 @@ QString printEventDateBase(QString dateYesterday){
     }
     return country;
 }
+
+void database::addDateClick(QString date, QString event){
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        if (!db.open()) {
+            qDebug() << "Ошибка открытия БД:" << db.lastError().text();
+            return;
+        }
+    }
+    QSqlQuery query(db);
+    query.prepare("INSERT INTO events (event_date, event_text) VALUES (:date, :text)");
+    query.bindValue(":date", date);
+    query.bindValue(":text", event);
+
+    if (!query.exec()) {
+        qDebug() << "Ошибка добавления:" << query.lastError().text();
+        emit onAddDateClick("Ошибка добавления");
+    } else {
+        qDebug() << "Событие добавлено!";
+        emit onAddDateClick("Событие добавлено!");
+    }
+}
+void database :: deleteDateClick(QString date, QString event){
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        if (!db.open()) {
+            qDebug() << "Ошибка открытия БД:" << db.lastError().text();
+            return;
+        }
+    }
+    QSqlQuery query(db);
+    query.prepare("DELETE FROM events WHERE event_date = (:date)");
+    query.bindValue(":date", date);
+
+    if (!query.exec()) {
+        qDebug() << "Ошибка удаления:" << query.lastError().text();
+        emit onDeleteDateClick("Ошибка удаления:");
+
+    } else {
+        qDebug() << "Событие удалено!";
+        emit onDeleteDateClick("Событие удалено!");
+    }
+}
+

@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("tuesdayDate", dateDay.toString("yyyy-MM-dd"));
 
     qmlRegisterType<clicker>("clicker", 1, 0,"Clicker");
-
+    qmlRegisterType<database>("datebase",1,0,"Datebase");
 
     int current = QRandomGenerator::global()->bounded(1,121);
     int yyTuesday =  dateDay.year()-current;

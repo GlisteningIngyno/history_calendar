@@ -3,11 +3,15 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import Qt.labs.qmlmodels
 
-import "./customcomponent" as CustomComponent
+import datebase
+import "customcomponent"
 
 Rectangle {
     color: "#D8FFD1"
     property StackView stackView: null // Свойство для связи со StackView
+    Datebase {
+        id: datebaseCustoms
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -18,111 +22,90 @@ Rectangle {
             font.pixelSize: 48
             font.styleName: "Inter"
             Layout.fillWidth: parent
-            Layout.margins: 15
+            Layout.margins: 10
         }
 
         Rectangle {
             color: "#A1FA91"
             border.color: "#2A5722"
             border.width: 3
-            radius: 10
+            radius: 5
 
             Layout.fillWidth: parent
             Layout.fillHeight: parent
+            Layout.margins: 10
+
             GridLayout {
                 anchors.fill: parent
+                anchors.margins: 5
                 columns: 3
-                rows: 2
-                columnSpacing: 10
+                rows: 4
+                columnSpacing: 5
                 Text {
                     text: "Добавить дату или файл"
-
-                    Layout.fillWidth: parent
-                    Layout.margins: 10
-                }
-                Button {
-                    text: "Добавить"
-
-                    Layout.margins: 10
+                    font.pixelSize: 20
+                    horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: parent
                 }
-                Button {
-                    text: "Файл"
-
-                    Layout.margins: 10
+                CustomButton {
+                    textCustom: "Добавить"
                     Layout.fillWidth: parent
+                    Layout.margins: 2
+                    onClicked: {
+                        stackView.push(addEventDate)
+                    }
                 }
-                Text {
-                    text: "Добавить дату или файл"
+                CustomButton {
+                    textCustom: "Файл"
 
                     Layout.fillWidth: parent
-                    Layout.margins: 10
-                }
-                Button {
-                    text: "Добавить"
-
-                    Layout.margins: 10
-                    Layout.fillWidth: parent
-                }
-                Button {
-                    text: "Файл"
-
-                    Layout.margins: 10
-                    Layout.fillWidth: parent
+                    Layout.margins: 2
                 }
                 Text {
-                    text: "Добавить дату или файл"
+                    text: "Удалить дату или файл"
+                    font.pixelSize: 20
+                    horizontalAlignment: Text.AlignHCenter
 
                     Layout.fillWidth: parent
-                    Layout.margins: 10
+                    Layout.margins: 2
+                    Layout.leftMargin: 10
                 }
-                Button {
-                    text: "Добавить"
-
-                    Layout.margins: 10
+                CustomButton {
+                    textCustom: "Добавить"
                     Layout.fillWidth: parent
+                    Layout.margins: 2
                 }
-                Button {
-                    text: "Файл"
-
-                    Layout.margins: 10
+                CustomButton {
+                    textCustom: "Файл"
                     Layout.fillWidth: parent
-                }
-                Text {
-                    text: "Добавить дату или файл"
-
-                    Layout.fillWidth: parent
-                    Layout.margins: 10
-                }
-                Button {
-                    text: "Добавить"
-
-                    Layout.margins: 10
-                    Layout.fillWidth: parent
-                }
-                Button {
-                    text: "Файл"
-
-                    Layout.margins: 10
-                    Layout.fillWidth: parent
+                    Layout.margins: 2
                 }
                 Text {
-                    text: "Добавить дату или файл"
+                    text: "Таблица данных"
+                    font.pixelSize: 20
+                    horizontalAlignment: Text.AlignHCenter
 
-                    Layout.fillWidth: parent
-                    Layout.margins: 10
-                }
-                Button {
-                    text: "Добавить"
-
-                    Layout.margins: 10
                     Layout.fillWidth: parent
                 }
-                Button {
-                    text: "Файл"
-
-                    Layout.margins: 10
+                CustomButton {
+                    textCustom: "Смотреть"
                     Layout.fillWidth: parent
+                    Layout.columnSpan: 2
+                    Layout.margins: 2
+                }
+
+                Text {
+                    text: "Изменить тему"
+                    font.pixelSize: 20
+                    horizontalAlignment: Text.AlignHCenter
+
+                    Layout.fillWidth: parent
+                }
+                CustomButton {
+                    textCustom: "Изменить"
+                    Layout.fillWidth: parent
+                    Layout.columnSpan: 2
+                    Layout.margins: 2
                 }
             }
         }
@@ -134,7 +117,7 @@ Rectangle {
             icon.width: 32
             icon.height: 32
 
-            Layout.margins: 25
+            Layout.margins: 15
 
             background: Rectangle {
                 implicitWidth: 52
@@ -150,21 +133,47 @@ Rectangle {
             }
         }
     }
-} // TableModel {//     id: eventDateTable//     TableModelColumn {//         display: "name"//     }//     TableModelColumn {//         display: "age"//     }//     rows: [{//             "name": "Tom",//             "age": 39//         }, {
-//             "name": "Bob",
-//             "age": 43
-//         }, {
-//             "name": "Sam",
-//             "age": 28
-//         }]
-// }
-// TableView {
-//     model: eventDateTable
-//     Layout.fillWidth: parent
-//     Layout.fillHeight: parent
-//     Layout.margins: 25
-//     delegate: Text {
-//         text: model.display
-//     }
-// }
+    Component {
+        id: addEventDate
+        Rectangle {
+            Text {
+                id: txtSettingAdd
+                anchors.fill: parent
+                anchors.margins: 5
+                text: ""
+            }
 
+            color: "#D8FFD1"
+            GridLayout {
+                anchors.fill: parent
+                anchors.margins: 5
+                columns: 3
+                rows: 3
+                columnSpacing: 5
+                TextField {
+                    id: textFieldDate
+                    Layout.fillWidth: parent
+                    color: "pink"
+                }
+                TextField {
+                    id: textFieldEvent
+                    Layout.fillWidth: parent
+                }
+                CustomButton {
+                    Layout.fillWidth: parent
+                    onClicked: {
+                        datebaseCustoms.addDateClick(textFieldDate.text,
+                                                     textFieldEvent.text)
+                        // stackView.pop()
+                    }
+                }
+            }
+            function onChangedDateBase(newValue) {
+                txtSettingAdd.text = newValue
+            }
+            Component.onCompleted: {
+                datebaseCustoms.onAddDateClick.connect(onChangedDateBase)
+            }
+        }
+    }
+}
