@@ -71,9 +71,12 @@ Rectangle {
                     Layout.leftMargin: 10
                 }
                 CustomButton {
-                    textCustom: "Добавить"
+                    textCustom: "Удалить"
                     Layout.fillWidth: parent
                     Layout.margins: 2
+                    onClicked: {
+                        stackView.push(deleteEventDate)
+                    }
                 }
                 CustomButton {
                     textCustom: "Файл"
@@ -164,7 +167,6 @@ Rectangle {
                     onClicked: {
                         datebaseCustoms.addDateClick(textFieldDate.text,
                                                      textFieldEvent.text)
-                        // stackView.pop()
                     }
                 }
             }
@@ -173,6 +175,47 @@ Rectangle {
             }
             Component.onCompleted: {
                 datebaseCustoms.onAddDateClick.connect(onChangedDateBase)
+            }
+        }
+    }
+    Component {
+        id: deleteEventDate
+        Rectangle {
+            Text {
+                id: txtSettingDelete
+                anchors.fill: parent
+                anchors.margins: 5
+                text: ""
+            }
+
+            color: "#D8FFD1"
+            GridLayout {
+                anchors.fill: parent
+                anchors.margins: 5
+                columns: 3
+                rows: 3
+                columnSpacing: 5
+                TextField {
+                    id: textFieldDate
+                    Layout.fillWidth: parent
+                    color: "pink"
+                }
+                TextField {
+                    id: textFieldEvent
+                    Layout.fillWidth: parent
+                }
+                CustomButton {
+                    Layout.fillWidth: parent
+                    onClicked: {
+                        datebaseCustoms.deleteDateClick(textFieldDate.text)
+                    }
+                }
+            }
+            function onChangedDateBase(newValue) {
+                txtSettingAdd.text = newValue
+            }
+            Component.onCompleted: {
+                datebaseCustoms.onDeleteDateClick.connect(onChangedDateBase)
             }
         }
     }

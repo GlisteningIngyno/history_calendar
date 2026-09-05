@@ -64,6 +64,10 @@ QString printEventDateBase(QString dateYesterday){
     return country;
 }
 
+
+
+
+
 void database::addDateClick(QString date, QString event){
     QSqlDatabase db = QSqlDatabase::database();
     if (!db.isOpen()) {

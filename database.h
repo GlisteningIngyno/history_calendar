@@ -16,9 +16,6 @@ public:
 signals:
     void onAddDateClick(QString);
     void onDeleteDateClick(QString);
-private:
-    QString value{};
-    QString event{};
 };
 
 QString getDatabasePath();

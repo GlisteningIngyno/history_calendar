@@ -13,14 +13,9 @@ public:
     Q_INVOKABLE void clickYesterday();
     Q_INVOKABLE void clickEvent(QString dateYesterday);
 
-
 signals:
     void onClickYesterday(QString);
     void onClickEvent(QString);
-private:
-    QString value{};
-    QString event{};
-
 };
 
 #endif // CLICKER_H
