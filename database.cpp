@@ -69,10 +69,19 @@ QString printEventDateBase(QString dateYesterday){
 
 
 void database::addDateClick(QString date, QString event){
+    if(date == " " || date == "" || date == nullptr ){
+        emit onAddDateClick("Неверное значение даты!");
+        return;
+    }
+    if(event == " " || event == "" || event == nullptr ){
+        emit onAddDateClick("Неверное значение события!");
+        return;
+    }
     QSqlDatabase db = QSqlDatabase::database();
     if (!db.isOpen()) {
         if (!db.open()) {
             qDebug() << "Ошибка открытия БД:" << db.lastError().text();
+            emit onAddDateClick("Ошибка открытия БД");
             return;
         }
     }
@@ -84,6 +93,7 @@ void database::addDateClick(QString date, QString event){
     if (!query.exec()) {
         qDebug() << "Ошибка добавления:" << query.lastError().text();
         emit onAddDateClick("Ошибка добавления");
+        return;
     } else {
         qDebug() << "Событие добавлено!";
         emit onAddDateClick("Событие добавлено!");
@@ -111,3 +121,37 @@ void database :: deleteDateClick(QString date, QString event){
     }
 }
 
+void database::addFileClick(QString filePath){
+    if(filePath == " " || filePath == "" || filePath == nullptr ){
+        emit onAddDateClick("Неверный путь файла!");
+        return;
+    }
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        if (!db.open()) {
+            qDebug() << "Ошибка открытия БД:" << db.lastError().text();
+            emit onAddDateClick("Ошибка открытия БД");
+            return;
+        }
+    }
+    QFile file(filePath);
+    if(file.open(QIODevice::ReadOnly)){
+        QSqlQuery query(db);
+        QTextStream textStream (&file);
+        while(!textStream.atEnd()){
+            QString line = textStream.readLine();
+            QStringList fields = line.split(',');
+
+            QString request = QString("INSERT INTO events (event_date, event_text) VALUES('%1', '%2')")
+                                  .arg(fields[0])
+                                  .arg(fields[1]);
+
+            query.exec(request);
+        }
+        emit onAddFileClick("База данных успешно обновлена");
+    }
+    else{
+        emit onAddFileClick("Файл не удалось открыть");
+    }
+    file.close();
+}

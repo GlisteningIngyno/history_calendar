@@ -5,7 +5,6 @@ import clicker
 import Qt.labs.qmlmodels
 
 ApplicationWindow {
-    //Для анимации используем Flipable
     width: 650
     height: 450
     visible: true

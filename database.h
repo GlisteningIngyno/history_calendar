@@ -13,9 +13,11 @@ public:
 
     Q_INVOKABLE void addDateClick(QString date, QString event);
     Q_INVOKABLE void deleteDateClick(QString date, QString event);
+    Q_INVOKABLE void addFileClick(QString filePath);
 signals:
     void onAddDateClick(QString);
     void onDeleteDateClick(QString);
+    void onAddFileClick(QString);
 };
 
 QString getDatabasePath();

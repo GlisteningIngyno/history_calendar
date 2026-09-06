@@ -2,17 +2,29 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import Qt.labs.qmlmodels
+import QtQuick.Dialogs
 
 import datebase
 import "customcomponent"
 
 Rectangle {
     color: "#D8FFD1"
-    property StackView stackView: null // Свойство для связи со StackView
+    property StackView stackView: null
     Datebase {
         id: datebaseCustoms
     }
+    FileDialog {
+        id: fileDialog
+        title: "Please choose a file"
 
+        onAccepted: {
+            console.log("You chose: " + fileDialog.selectedFile)
+            datebaseCustoms.addFileClick(fileDialog.selectedFile)
+        }
+        onRejected: {
+            console.log("Canceled")
+        }
+    }
     ColumnLayout {
         anchors.fill: parent
         Text {
@@ -57,9 +69,18 @@ Rectangle {
                 }
                 CustomButton {
                     textCustom: "Файл"
-
                     Layout.fillWidth: parent
                     Layout.margins: 2
+                    onClicked: {
+                        fileDialog.open()
+                    }
+                }
+                function onFileDateChaged(newValue) {
+                    txtAddEventFile.text = newValue
+                    txtAddEventFile.visible = true
+                }
+                Component.onCompleted: {
+                    datebaseCustoms.onAddFileClick.connect(onFileDateChaged)
                 }
                 Text {
                     text: "Удалить дату или файл"
@@ -112,7 +133,6 @@ Rectangle {
                 }
             }
         }
-
         Button {
             id: homeButton
             icon.source: "icons/house.svg"
@@ -135,6 +155,11 @@ Rectangle {
                 stackView.pop()
             }
         }
+        Text {
+            id: txtAddEventFile
+            text: ""
+            visible: false
+        }
     }
     Component {
         id: addEventDate
@@ -143,30 +168,80 @@ Rectangle {
                 id: txtSettingAdd
                 anchors.fill: parent
                 anchors.margins: 5
-                text: ""
-            }
+                horizontalAlignment: Text.AlignRight
 
+                text: ""
+                font.pixelSize: 15
+                color: "Red"
+                width: 3
+            }
             color: "#D8FFD1"
-            GridLayout {
+            ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: 5
-                columns: 3
-                rows: 3
-                columnSpacing: 5
+                Text {
+                    text: "Введите дату:"
+                    Layout.fillWidth: parent
+                    Layout.fillHeight: parent
+                    Layout.margins: 10
+                    font.pixelSize: 35
+                }
                 TextField {
                     id: textFieldDate
                     Layout.fillWidth: parent
-                    color: "pink"
+                    Layout.fillHeight: parent
+                    Layout.margins: 3
+
+                    color: "black"
+                    font.pixelSize: 20
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        border.width: 3
+                    }
+                }
+                Text {
+                    text: "Введите событие"
+                    Layout.fillWidth: parent
+                    Layout.fillHeight: parent
+                    Layout.margins: 10
+                    font.pixelSize: 35
                 }
                 TextField {
                     id: textFieldEvent
                     Layout.fillWidth: parent
+                    Layout.fillHeight: parent
+                    Layout.margins: 3
+
+                    color: "black"
+                    font.pixelSize: 20
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        border.width: 3
+                    }
                 }
-                CustomButton {
-                    Layout.fillWidth: parent
-                    onClicked: {
-                        datebaseCustoms.addDateClick(textFieldDate.text,
-                                                     textFieldEvent.text)
+                RowLayout {
+                    CustomButton {
+                        pixelSizeCustom: 35
+
+                        Layout.fillWidth: parent
+                        Layout.fillHeight: parent
+                        Layout.margins: 10
+
+                        onClicked: {
+                            datebaseCustoms.addDateClick(textFieldDate.text,
+                                                         textFieldEvent.text)
+                        }
+                    }
+                    CustomButton {
+                        pixelSizeCustom: 35
+                        textCustom: "Отмена"
+                        Layout.fillWidth: parent
+                        Layout.fillHeight: parent
+                        Layout.margins: 10
+                        onClicked: {
+                            stackView.pop()
+                        }
                     }
                 }
             }
@@ -195,6 +270,18 @@ Rectangle {
                 columns: 3
                 rows: 3
                 columnSpacing: 5
+                Text {
+                    text: "Введите дату:"
+                    Layout.fillWidth: parent
+                }
+                Text {
+                    text: "Введите событие"
+                    Layout.fillWidth: parent
+                }
+                Text {
+                    text: "Убидитесь в правильности данных!"
+                    Layout.fillWidth: parent
+                }
                 TextField {
                     id: textFieldDate
                     Layout.fillWidth: parent

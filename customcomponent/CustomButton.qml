@@ -4,6 +4,7 @@ import QtQuick.Controls
 Button {
     property url iconSource: "icons/house.svg"
     property string textCustom: qsTr("Добавить")
+    property int pixelSizeCustom: 15
 
     id: homeButton
 
@@ -19,6 +20,7 @@ Button {
             anchors.fill: parent
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            font.pixelSize: homeButton.pixelSizeCustom
 
             id: name
             text: homeButton.textCustom
