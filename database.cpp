@@ -5,7 +5,8 @@
 #include <QSqlError>
 #include <QStandardPaths>
 #include <QDebug>
-
+#include <QUrl>
+#include <QVariantList>
 
 database::database(QObject *object): QObject(object) {}
 
@@ -121,11 +122,7 @@ void database :: deleteDateClick(QString date, QString event){
     }
 }
 
-void database::addFileClick(QString filePath){
-    if(filePath == " " || filePath == "" || filePath == nullptr ){
-        emit onAddDateClick("Неверный путь файла!");
-        return;
-    }
+void database::addFileClick(QUrl fileUrl){
     QSqlDatabase db = QSqlDatabase::database();
     if (!db.isOpen()) {
         if (!db.open()) {
@@ -134,24 +131,65 @@ void database::addFileClick(QString filePath){
             return;
         }
     }
+    QString filePath = fileUrl.toLocalFile();
     QFile file(filePath);
-    if(file.open(QIODevice::ReadOnly)){
+
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        db.transaction();
+
         QSqlQuery query(db);
-        QTextStream textStream (&file);
-        while(!textStream.atEnd()){
-            QString line = textStream.readLine();
+        query.prepare("INSERT INTO events (event_date, event_text) VALUES (:date, :text)");
+
+        QTextStream textStream(&file);
+        while (!textStream.atEnd()) {
+            QString line = textStream.readLine().trimmed();
+            if (line.isEmpty()) {
+                continue;
+            }
             QStringList fields = line.split(',');
-
-            QString request = QString("INSERT INTO events (event_date, event_text) VALUES('%1', '%2')")
-                                  .arg(fields[0])
-                                  .arg(fields[1]);
-
-            query.exec(request);
+            if (fields.size() < 2) {
+                qWarning() << "Пропущена некорректная строка:" << line;
+                continue;
+            }
+            query.bindValue(":date", fields[0].trimmed());
+            query.bindValue(":text", fields[1].trimmed());
+            if (!query.exec()) {
+                qWarning() << "Ошибка вставки строки:" << query.lastError().text();
+            }
         }
+        db.commit();
+        file.close();
         emit onAddFileClick("База данных успешно обновлена");
-    }
-    else{
+
+    } else{
         emit onAddFileClick("Файл не удалось открыть");
     }
-    file.close();
+}
+
+void database:: printTableDB(){
+    QVariantList finalDataList;
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        if (!db.open()) {
+            qDebug() << "Ошибка открытия БД:" << db.lastError().text();
+
+            emit onPrintTableDB(finalDataList);
+            return;
+        }
+    }
+    QSqlQuery query(db);
+    query.prepare("SELECT event_date, event_text FROM events");
+    if (!query.exec()) {
+        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+        emit onPrintTableDB(finalDataList);
+        return;
+    }
+    while(query.next()){
+        QVariantMap row;
+        row["date"] = query.value("event_date").toString();
+        row["event"] = query.value("event_text").toString();
+        finalDataList.append(row);
+    }
+    emit onPrintTableDB(finalDataList);
+
 }

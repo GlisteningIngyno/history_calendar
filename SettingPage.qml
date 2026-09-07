@@ -108,7 +108,6 @@ Rectangle {
                     text: "Таблица данных"
                     font.pixelSize: 20
                     horizontalAlignment: Text.AlignHCenter
-
                     Layout.fillWidth: parent
                 }
                 CustomButton {
@@ -116,8 +115,10 @@ Rectangle {
                     Layout.fillWidth: parent
                     Layout.columnSpan: 2
                     Layout.margins: 2
+                    onClicked: {
+                        stackView.push(openViewDateBase)
+                    }
                 }
-
                 Text {
                     text: "Изменить тему"
                     font.pixelSize: 20
@@ -303,6 +304,61 @@ Rectangle {
             }
             Component.onCompleted: {
                 datebaseCustoms.onDeleteDateClick.connect(onChangedDateBase)
+            }
+        }
+    }
+    Component {
+        id: openViewDateBase
+        Rectangle {
+            ColumnLayout {
+                anchors.fill: parent
+
+                TableModel {
+                    id: userTable
+                    TableModelColumn {
+                        display: "date"
+                    }
+                    TableModelColumn {
+                        display: "event"
+                    }
+                    rows: []
+                }
+
+                TableView {
+                    model: userTable
+                    delegate: Text {
+                        text: model.display
+                    }
+                    Layout.fillWidth: parent
+                    Layout.fillHeight: parent
+                    Layout.margins: 30
+                }
+                RowLayout {
+                    CustomButton {
+                        pixelSizeCustom: 35
+                        textCustom: "Отмена"
+                        Layout.fillWidth: parent
+                        Layout.margins: 10
+                        onClicked: {
+                            stackView.pop()
+                        }
+                    }
+                    CustomButton {
+                        pixelSizeCustom: 35
+                        textCustom: "Вывести БД"
+                        Layout.fillWidth: parent
+                        Layout.margins: 10
+                        onClicked: {
+                            datebaseCustoms.printTableDB()
+                        }
+                    }
+                }
+            }
+            Connections {
+                target: datebaseCustoms
+                function onOnPrintTableDB(dataList) {
+                    userTable.rows = dataList
+                }
             }
         }
     }

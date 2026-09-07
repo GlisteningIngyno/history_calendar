@@ -4,6 +4,8 @@
 
 #include <QObject>
 #include <QString>
+#include <QUrl>
+#include <QVariantList>
 
 class database : public QObject
 {
@@ -13,11 +15,14 @@ public:
 
     Q_INVOKABLE void addDateClick(QString date, QString event);
     Q_INVOKABLE void deleteDateClick(QString date, QString event);
-    Q_INVOKABLE void addFileClick(QString filePath);
+    Q_INVOKABLE void addFileClick(QUrl filePath);
+    Q_INVOKABLE void printTableDB();
+
 signals:
     void onAddDateClick(QString);
     void onDeleteDateClick(QString);
     void onAddFileClick(QString);
+    void onPrintTableDB(QVariantList);
 };
 
 QString getDatabasePath();
