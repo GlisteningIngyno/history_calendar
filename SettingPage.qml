@@ -79,8 +79,14 @@ Rectangle {
                     txtAddEventFile.text = newValue
                     txtAddEventFile.visible = true
                 }
+                function onFileDeleteChanded(newValue) {
+                    txtAddEventFile.text = newValue
+                    txtAddEventFile.visible = true
+                }
+
                 Component.onCompleted: {
                     datebaseCustoms.onAddFileClick.connect(onFileDateChaged)
+                    datebaseCustoms.onDeleteFileClick(onFileDeleteChanded)
                 }
                 Text {
                     text: "Удалить дату или файл"
@@ -103,6 +109,9 @@ Rectangle {
                     textCustom: "Файл"
                     Layout.fillWidth: parent
                     Layout.margins: 2
+                    onClicked: {
+                        datebaseCustoms.deleteFileClick()
+                    }
                 }
                 Text {
                     text: "Таблица данных"
@@ -118,19 +127,6 @@ Rectangle {
                     onClicked: {
                         stackView.push(openViewDateBase)
                     }
-                }
-                Text {
-                    text: "Изменить тему"
-                    font.pixelSize: 20
-                    horizontalAlignment: Text.AlignHCenter
-
-                    Layout.fillWidth: parent
-                }
-                CustomButton {
-                    textCustom: "Изменить"
-                    Layout.fillWidth: parent
-                    Layout.columnSpan: 2
-                    Layout.margins: 2
                 }
             }
         }
@@ -280,7 +276,7 @@ Rectangle {
                     Layout.fillWidth: parent
                 }
                 Text {
-                    text: "Убидитесь в правильности данных!"
+                    text: "Убедитесь в правильности данных!"
                     Layout.fillWidth: parent
                 }
                 TextField {

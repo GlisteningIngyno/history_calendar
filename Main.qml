@@ -9,7 +9,7 @@ ApplicationWindow {
     height: 450
     visible: true
     title: qsTr("History Сalendar")
-    color: "#D8FFD1"
+    color: "#F9ECD9"
     Clicker {
         id: clicker
     }
@@ -55,7 +55,7 @@ ApplicationWindow {
                         context.fill()
                         context.stroke()
 
-                        context.strokeStyle = "green"
+                        context.strokeStyle = "#black"
                         context.beginPath()
                         context.moveTo(topX, topY)
                         context.lineTo(bottomX, bottomY)
@@ -81,8 +81,8 @@ ApplicationWindow {
                         Rectangle {
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            color: "#A1FA91"
-                            border.color: "#2A5722"
+                            color: "#F2E0C8"
+                            border.color: "#000000"
                             border.width: 3
                             radius: 10
                             ColumnLayout {
@@ -90,7 +90,7 @@ ApplicationWindow {
                                 Text {
                                     id: txtTuesday
                                     text: tuesdayDate
-                                    color: "#2A5722"
+                                    color: "#000000"
                                     wrapMode: Text.Wrap
                                     horizontalAlignment: Text.AlignHCenter
                                     font.pixelSize: 48
@@ -104,7 +104,7 @@ ApplicationWindow {
                                 Text {
                                     id: txtYesterday
                                     text: yesterdayDate
-                                    color: "#2A5722"
+                                    color: "#000000"
                                     wrapMode: Text.Wrap
                                     horizontalAlignment: Text.AlignHCenter
                                     font.pixelSize: 48
@@ -118,7 +118,7 @@ ApplicationWindow {
                                 Text {
                                     id: txtEvnt
                                     text: eventDate
-                                    color: "#2A5722"
+                                    color: "#000000"
                                     wrapMode: Text.Wrap
                                     horizontalAlignment: Text.AlignHCenter
                                     font.pixelSize: 24
@@ -135,8 +135,8 @@ ApplicationWindow {
                     back: ColumnLayout {
                         anchors.fill: parent
                         Rectangle {
-                            color: "#A1FA91"
-                            border.color: "#2A5722"
+                            color: "#F2E0C8"
+                            border.color: "#000000"
                             border.width: 3
                             radius: 10
 
@@ -147,7 +147,7 @@ ApplicationWindow {
                                 Text {
                                     id: txtTuesday_
                                     text: tuesdayDate
-                                    color: "#2A5722"
+                                    color: "#000000"
                                     wrapMode: Text.Wrap
                                     horizontalAlignment: Text.AlignHCenter
                                     font.pixelSize: 48
@@ -161,7 +161,7 @@ ApplicationWindow {
                                 Text {
                                     id: txtYesterday_
                                     text: yesterdayDate
-                                    color: "#2A5722"
+                                    color: "#000000"
                                     wrapMode: Text.Wrap
                                     horizontalAlignment: Text.AlignHCenter
                                     font.pixelSize: 48
@@ -175,7 +175,7 @@ ApplicationWindow {
                                 Text {
                                     id: txtEvnt_
                                     text: eventDate
-                                    color: "#2A5722"
+                                    color: "#000000"
                                     wrapMode: Text.Wrap
                                     horizontalAlignment: Text.AlignHCenter
                                     font.pixelSize: 24
@@ -256,17 +256,16 @@ ApplicationWindow {
 
                         implicitWidth: 32
                         implicitHeight: 32
-                        color: settingsButton.pressed ? "#1fa307" : settingsButton.hovered ? "#bafbae" : "#A1FA91"
+                        color: settingsButton.pressed ? "#C6837C" : settingsButton.hovered ? "#FFF1DE" : "#F2E0C8"
 
                         radius: 7
                         border.width: 2.0
-                        border.color: "#2A5722"
+                        border.color: "#000000"
                     }
                     onClicked: {
                         stackViewTop.push(settingPage)
                     }
                 }
-
                 Button {
                     id: manualButton
                     icon.source: "icons/info2.svg"
@@ -280,11 +279,11 @@ ApplicationWindow {
 
                         implicitWidth: 32
                         implicitHeight: 32
-                        color: manualButton.pressed ? "#1fa307" : manualButton.hovered ? "#bafbae" : "#A1FA91"
+                        color: manualButton.pressed ? "#C6837C" : manualButton.hovered ? "#FFF1DE" : "#F2E0C8"
 
                         radius: 7
                         border.width: 2.0
-                        border.color: "#2A5722"
+                        border.color: "#000000"
                     }
                     onClicked: {
                         stackViewTop.push(infoPages)

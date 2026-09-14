@@ -166,6 +166,24 @@ void database::addFileClick(QUrl fileUrl){
     }
 }
 
+void database::deleteFileClick(){
+    QSqlDatabase db = QSqlDatabase::database();
+    if(!db.isOpen()){
+        qDebug() << "Ошибка открытия БД:" << db.lastError().text();
+        emit onDeleteFileClick("Ошибка открытия БД");
+        return;
+    }
+    QSqlQuery query(db);
+    query.prepare("DELETE FROM events");
+    if(!query.exec()){
+        qDebug() << "Не удалось очиситить базу данных";
+        emit onDeleteFileClick("Не удалось очиситить базу данных");
+        return;
+    }
+    emit onDeleteFileClick("База данных успешна очищена");
+    return;
+}
+
 void database:: printTableDB(){
     QVariantList finalDataList;
     QSqlDatabase db = QSqlDatabase::database();
@@ -193,3 +211,4 @@ void database:: printTableDB(){
     emit onPrintTableDB(finalDataList);
 
 }
+

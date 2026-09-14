@@ -16,6 +16,7 @@ public:
     Q_INVOKABLE void addDateClick(QString date, QString event);
     Q_INVOKABLE void deleteDateClick(QString date, QString event);
     Q_INVOKABLE void addFileClick(QUrl filePath);
+    Q_INVOKABLE void deleteFileClick();
     Q_INVOKABLE void printTableDB();
 
 signals:
@@ -23,6 +24,7 @@ signals:
     void onDeleteDateClick(QString);
     void onAddFileClick(QString);
     void onPrintTableDB(QVariantList);
+    void onDeleteFileClick(QString);
 };
 
 QString getDatabasePath();
