@@ -85,8 +85,9 @@ Rectangle {
                 }
 
                 Component.onCompleted: {
-                    datebaseCustoms.onAddFileClick.connect(onFileDateChaged)
                     datebaseCustoms.onDeleteFileClick(onFileDeleteChanded)
+
+                    datebaseCustoms.onAddFileClick.connect(onFileDateChaged)
                 }
                 Text {
                     text: "Удалить дату или файл"
@@ -102,6 +103,7 @@ Rectangle {
                     Layout.fillWidth: parent
                     Layout.margins: 2
                     onClicked: {
+
                         stackView.push(deleteEventDate)
                     }
                 }
@@ -257,52 +259,94 @@ Rectangle {
                 id: txtSettingDelete
                 anchors.fill: parent
                 anchors.margins: 5
-                text: ""
-            }
+                horizontalAlignment: Text.AlignRight
 
+                text: ""
+                font.pixelSize: 15
+                color: "Red"
+                width: 3
+            }
             color: "#D8FFD1"
-            GridLayout {
+            ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: 5
-                columns: 3
-                rows: 3
-                columnSpacing: 5
                 Text {
                     text: "Введите дату:"
                     Layout.fillWidth: parent
+                    Layout.fillHeight: parent
+                    Layout.margins: 10
+                    font.pixelSize: 35
+                }
+                TextField {
+                    id: textDateDelete
+                    Layout.fillWidth: parent
+                    Layout.fillHeight: parent
+                    Layout.margins: 3
+
+                    color: "black"
+                    font.pixelSize: 20
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        border.width: 3
+                    }
                 }
                 Text {
                     text: "Введите событие"
                     Layout.fillWidth: parent
-                }
-                Text {
-                    text: "Убедитесь в правильности данных!"
-                    Layout.fillWidth: parent
-                }
-                TextField {
-                    id: textFieldDate
-                    Layout.fillWidth: parent
-                    color: "pink"
+                    Layout.fillHeight: parent
+                    Layout.margins: 10
+                    font.pixelSize: 35
                 }
                 TextField {
-                    id: textFieldEvent
+                    id: textEventDelete
                     Layout.fillWidth: parent
+                    Layout.fillHeight: parent
+                    Layout.margins: 3
+
+                    color: "black"
+                    font.pixelSize: 20
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        border.width: 3
+                    }
                 }
-                CustomButton {
-                    Layout.fillWidth: parent
-                    onClicked: {
-                        datebaseCustoms.deleteDateClick(textFieldDate.text)
+                RowLayout {
+                    CustomButton {
+                        pixelSizeCustom: 35
+                        textCustom: "Удалить"
+                        Layout.fillWidth: parent
+                        Layout.fillHeight: parent
+                        Layout.margins: 10
+
+                        onClicked: {
+
+                            datebaseCustoms.deleteDateClick(
+                                        textDateDelete.text,
+                                        textEventDelete.text)
+                        }
+                    }
+                    CustomButton {
+                        pixelSizeCustom: 35
+                        textCustom: "Отмена"
+                        Layout.fillWidth: parent
+                        Layout.fillHeight: parent
+                        Layout.margins: 10
+                        onClicked: {
+                            stackView.pop()
+                        }
                     }
                 }
             }
-            function onChangedDateBase(newValue) {
-                txtSettingAdd.text = newValue
+            function onChangedDBDelete(newValue) {
+                txtSettingDelete.text = newValue
             }
             Component.onCompleted: {
-                datebaseCustoms.onDeleteDateClick.connect(onChangedDateBase)
+                datebaseCustoms.onDeleteDateClick.connect(onChangedDBDelete)
             }
         }
     }
+
     Component {
         id: openViewDateBase
         Rectangle {

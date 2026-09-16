@@ -179,8 +179,9 @@ void database::deleteFileClick(){
         qDebug() << "Не удалось очиситить базу данных";
         emit onDeleteFileClick("Не удалось очиситить базу данных");
         return;
+    }else{
+        emit onDeleteFileClick("База данных успешна очищена");
     }
-    emit onDeleteFileClick("База данных успешна очищена");
     return;
 }
 
