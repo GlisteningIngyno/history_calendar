@@ -8,6 +8,11 @@
 #include <QUrl>
 #include <QVariantList>
 
+
+#include <iostream>
+#include <fstream>
+
+
 database::database(QObject *object): QObject(object) {}
 
 QString getDatabasePath() {
@@ -71,11 +76,11 @@ QString printEventDateBase(QString dateYesterday){
 
 void database::addDateClick(QString date, QString event){
     if(date == " " || date == "" || date == nullptr ){
-        emit onAddDateClick("Неверное значение даты!");
+        emit onAddDateClick("Пустое значение даты!");
         return;
     }
     if(event == " " || event == "" || event == nullptr ){
-        emit onAddDateClick("Неверное значение события!");
+        emit onAddDateClick("Пустое значение события!");
         return;
     }
     QSqlDatabase db = QSqlDatabase::database();
@@ -100,7 +105,7 @@ void database::addDateClick(QString date, QString event){
         emit onAddDateClick("Событие добавлено!");
     }
 }
-void database :: deleteDateClick(QString date, QString event){
+void database::deleteDateClick(QString date, QString event){
     QSqlDatabase db = QSqlDatabase::database();
     if (!db.isOpen()) {
         if (!db.open()) {
@@ -157,21 +162,23 @@ void database::addFileClick(QUrl fileUrl){
                 qWarning() << "Ошибка вставки строки:" << query.lastError().text();
             }
         }
+        emit onAddFileClick("База данных успешно обновлена");
         db.commit();
         file.close();
-        emit onAddFileClick("База данных успешно обновлена");
 
     } else{
         emit onAddFileClick("Файл не удалось открыть");
     }
 }
-
 void database::deleteFileClick(){
+
     QSqlDatabase db = QSqlDatabase::database();
     if(!db.isOpen()){
-        qDebug() << "Ошибка открытия БД:" << db.lastError().text();
-        emit onDeleteFileClick("Ошибка открытия БД");
-        return;
+            if (!db.open()) {
+            qDebug() << "Ошибка открытия БД:" << db.lastError().text();
+            emit onDeleteFileClick("Ошибка открытия БД");
+            return;
+        }
     }
     QSqlQuery query(db);
     query.prepare("DELETE FROM events");
@@ -205,11 +212,39 @@ void database:: printTableDB(){
     }
     while(query.next()){
         QVariantMap row;
-        row["date"] = query.value("event_date").toString();
-        row["event"] = query.value("event_text").toString();
+        row["date"] = " "+query.value("event_date").toString();
+        row["event"] = " "+query.value("event_text").toString();
         finalDataList.append(row);
     }
     emit onPrintTableDB(finalDataList);
-
+    return;
 }
 
+void database::exportFileCSV(){
+    QSqlDatabase db = QSqlDatabase::database();
+    if(!db.isOpen()){
+        if (!db.open()) {
+            qDebug() << "Ошибка открытия БД:" << db.lastError().text();
+
+            emit onExportFileCSV("Ошибка открытия БД");
+            return;
+        }
+    }
+    QSqlQuery query(db);
+    query.prepare("SELECT event_date, event_text FROM events");
+    if (!query.exec()) {
+        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+        emit onExportFileCSV("Ошибка выполнения запроса");
+        return;
+    }
+    std::ofstream outResultFile;
+    outResultFile.open("HistoryCalendar.csv");
+    while(query.next()){
+        outResultFile << query.value("event_date").toString().toStdString() <<
+            "," << query.value("event_text").toString().toStdString() << "\n";
+
+    }
+    outResultFile.close();
+    emit onExportFileCSV("Успешный экспорт");
+    return;
+}

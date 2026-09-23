@@ -28,7 +28,7 @@ qt_add_qml_module(appHistoryProject2
         QML_FILES SettingPage.qml
         QML_FILES InfoPage.qml
         QML_FILES customcomponent/CustomButton.qml
-
+        QML_FILES customcomponent/CustomAddDeletePage.qml
 )
 
 

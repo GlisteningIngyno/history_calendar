@@ -33,7 +33,6 @@ ApplicationWindow {
                     const context = getContext("2d")
 
                     var radius = 5
-                    //переменная для C++ под размер окна
                     for (var i = 10; i < width; i += 35) {
 
                         var topX = i

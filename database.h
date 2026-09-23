@@ -18,6 +18,7 @@ public:
     Q_INVOKABLE void addFileClick(QUrl filePath);
     Q_INVOKABLE void deleteFileClick();
     Q_INVOKABLE void printTableDB();
+    Q_INVOKABLE void exportFileCSV();
 
 signals:
     void onAddDateClick(QString);
@@ -25,6 +26,7 @@ signals:
     void onAddFileClick(QString);
     void onPrintTableDB(QVariantList);
     void onDeleteFileClick(QString);
+    void onExportFileCSV(QString);
 };
 
 QString getDatabasePath();

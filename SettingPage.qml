@@ -25,6 +25,25 @@ Rectangle {
             console.log("Canceled")
         }
     }
+    Dialog {
+        id: dialog
+        title: "Вы уверены, что хотите очистить таблицу?"
+
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        implicitWidth: parent.width / 2
+        implicitHeight: parent.height / 2
+
+        anchors.centerIn: parent
+
+        onAccepted: {
+            console.log("Очистка содержимого таблицы!")
+            datebaseCustoms.deleteFileClick()
+        }
+        onRejected: {
+            console.log("Отмена чистки!")
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
         Text {
@@ -36,7 +55,6 @@ Rectangle {
             Layout.fillWidth: parent
             Layout.margins: 10
         }
-
         Rectangle {
             color: "#A1FA91"
             border.color: "#2A5722"
@@ -75,22 +93,8 @@ Rectangle {
                         fileDialog.open()
                     }
                 }
-                function onFileDateChaged(newValue) {
-                    txtAddEventFile.text = newValue
-                    txtAddEventFile.visible = true
-                }
-                function onFileDeleteChanded(newValue) {
-                    txtAddEventFile.text = newValue
-                    txtAddEventFile.visible = true
-                }
-
-                Component.onCompleted: {
-                    datebaseCustoms.onDeleteFileClick(onFileDeleteChanded)
-
-                    datebaseCustoms.onAddFileClick.connect(onFileDateChaged)
-                }
                 Text {
-                    text: "Удалить дату или файл"
+                    text: "Очистить содержимое таблицы"
                     font.pixelSize: 20
                     horizontalAlignment: Text.AlignHCenter
 
@@ -99,20 +103,12 @@ Rectangle {
                     Layout.leftMargin: 10
                 }
                 CustomButton {
-                    textCustom: "Удалить"
+                    textCustom: "Очистить"
                     Layout.fillWidth: parent
                     Layout.margins: 2
+                    Layout.columnSpan: 2
                     onClicked: {
-
-                        stackView.push(deleteEventDate)
-                    }
-                }
-                CustomButton {
-                    textCustom: "Файл"
-                    Layout.fillWidth: parent
-                    Layout.margins: 2
-                    onClicked: {
-                        datebaseCustoms.deleteFileClick()
+                        dialog.open()
                     }
                 }
                 Text {
@@ -130,223 +126,80 @@ Rectangle {
                         stackView.push(openViewDateBase)
                     }
                 }
+                Text {
+                    text: "Экспорт данных"
+                    font.pixelSize: 20
+                    horizontalAlignment: Text.AlignHCenter
+                    Layout.fillWidth: parent
+                }
+                CustomButton {
+                    textCustom: "Экпорт"
+                    Layout.fillWidth: parent
+                    Layout.columnSpan: 2
+                    Layout.margins: 2
+                    onClicked: {
+                        datebaseCustoms.exportFileCSV()
+                    }
+                }
+                function onFileAddDateChaged(newValue) {
+                    txtAddEventFile.text = newValue
+                    txtAddEventFile.visible = true
+                }
+                function onFileDeleteChanded(newValue) {
+                    txtAddEventFile.text = newValue
+                    txtAddEventFile.visible = true
+                }
+                function onExportFile_(newValue) {
+                    txtAddEventFile.text = newValue
+                    txtAddEventFile.visible = true
+                }
+
+                Component.onCompleted: {
+                    datebaseCustoms.onDeleteFileClick.connect(
+                                onFileDeleteChanded)
+                    datebaseCustoms.onAddFileClick.connect(onFileAddDateChaged)
+                    datebaseCustoms.onExportFileCSV.connect(onExportFile_)
+                }
             }
         }
-        Button {
-            id: homeButton
-            icon.source: "icons/house.svg"
-            icon.color: "transparent"
-            icon.width: 32
-            icon.height: 32
+        RowLayout {
+            Layout.fillWidth: parent
+            Button {
+                id: homeButton
+                icon.source: "icons/house.svg"
+                icon.color: "transparent"
+                icon.width: 32
+                icon.height: 32
 
-            Layout.margins: 15
+                Layout.margins: 15
 
-            background: Rectangle {
-                implicitWidth: 52
-                implicitHeight: 52
+                background: Rectangle {
+                    implicitWidth: 52
+                    implicitHeight: 52
 
-                color: homeButton.pressed ? "#1fa307" : homeButton.hovered ? "#bafbae" : "#A1FA91"
-                border.color: "#2A5722"
-                border.width: 3
-                radius: 10
+                    color: homeButton.pressed ? "#1fa307" : homeButton.hovered ? "#bafbae" : "#A1FA91"
+                    border.color: "#2A5722"
+                    border.width: 3
+                    radius: 10
+                }
+                onClicked: {
+                    stackView.pop()
+                }
             }
-            onClicked: {
-                stackView.pop()
+            Text {
+                id: txtAddEventFile
+                text: ""
+                visible: false
             }
-        }
-        Text {
-            id: txtAddEventFile
-            text: ""
-            visible: false
         }
     }
+
     Component {
         id: addEventDate
-        Rectangle {
-            Text {
-                id: txtSettingAdd
-                anchors.fill: parent
-                anchors.margins: 5
-                horizontalAlignment: Text.AlignRight
-
-                text: ""
-                font.pixelSize: 15
-                color: "Red"
-                width: 3
-            }
-            color: "#D8FFD1"
-            ColumnLayout {
-                anchors.fill: parent
-                Text {
-                    text: "Введите дату:"
-                    Layout.fillWidth: parent
-                    Layout.fillHeight: parent
-                    Layout.margins: 10
-                    font.pixelSize: 35
-                }
-                TextField {
-                    id: textFieldDate
-                    Layout.fillWidth: parent
-                    Layout.fillHeight: parent
-                    Layout.margins: 3
-
-                    color: "black"
-                    font.pixelSize: 20
-                    background: Rectangle {
-                        color: "white"
-                        border.color: "black"
-                        border.width: 3
-                    }
-                }
-                Text {
-                    text: "Введите событие"
-                    Layout.fillWidth: parent
-                    Layout.fillHeight: parent
-                    Layout.margins: 10
-                    font.pixelSize: 35
-                }
-                TextField {
-                    id: textFieldEvent
-                    Layout.fillWidth: parent
-                    Layout.fillHeight: parent
-                    Layout.margins: 3
-
-                    color: "black"
-                    font.pixelSize: 20
-                    background: Rectangle {
-                        color: "white"
-                        border.color: "black"
-                        border.width: 3
-                    }
-                }
-                RowLayout {
-                    CustomButton {
-                        pixelSizeCustom: 35
-
-                        Layout.fillWidth: parent
-                        Layout.fillHeight: parent
-                        Layout.margins: 10
-
-                        onClicked: {
-                            datebaseCustoms.addDateClick(textFieldDate.text,
-                                                         textFieldEvent.text)
-                        }
-                    }
-                    CustomButton {
-                        pixelSizeCustom: 35
-                        textCustom: "Отмена"
-                        Layout.fillWidth: parent
-                        Layout.fillHeight: parent
-                        Layout.margins: 10
-                        onClicked: {
-                            stackView.pop()
-                        }
-                    }
-                }
-            }
-            function onChangedDateBase(newValue) {
-                txtSettingAdd.text = newValue
-            }
-            Component.onCompleted: {
-                datebaseCustoms.onAddDateClick.connect(onChangedDateBase)
-            }
+        CustomAddDeletePage {
+            stackView: stackViewTop
         }
     }
-    Component {
-        id: deleteEventDate
-        Rectangle {
-            Text {
-                id: txtSettingDelete
-                anchors.fill: parent
-                anchors.margins: 5
-                horizontalAlignment: Text.AlignRight
-
-                text: ""
-                font.pixelSize: 15
-                color: "Red"
-                width: 3
-            }
-            color: "#D8FFD1"
-            ColumnLayout {
-                anchors.fill: parent
-                Text {
-                    text: "Введите дату:"
-                    Layout.fillWidth: parent
-                    Layout.fillHeight: parent
-                    Layout.margins: 10
-                    font.pixelSize: 35
-                }
-                TextField {
-                    id: textDateDelete
-                    Layout.fillWidth: parent
-                    Layout.fillHeight: parent
-                    Layout.margins: 3
-
-                    color: "black"
-                    font.pixelSize: 20
-                    background: Rectangle {
-                        color: "white"
-                        border.color: "black"
-                        border.width: 3
-                    }
-                }
-                Text {
-                    text: "Введите событие"
-                    Layout.fillWidth: parent
-                    Layout.fillHeight: parent
-                    Layout.margins: 10
-                    font.pixelSize: 35
-                }
-                TextField {
-                    id: textEventDelete
-                    Layout.fillWidth: parent
-                    Layout.fillHeight: parent
-                    Layout.margins: 3
-
-                    color: "black"
-                    font.pixelSize: 20
-                    background: Rectangle {
-                        color: "white"
-                        border.color: "black"
-                        border.width: 3
-                    }
-                }
-                RowLayout {
-                    CustomButton {
-                        pixelSizeCustom: 35
-                        textCustom: "Удалить"
-                        Layout.fillWidth: parent
-                        Layout.fillHeight: parent
-                        Layout.margins: 10
-
-                        onClicked: {
-
-                            datebaseCustoms.deleteDateClick(
-                                        textDateDelete.text,
-                                        textEventDelete.text)
-                        }
-                    }
-                    CustomButton {
-                        pixelSizeCustom: 35
-                        textCustom: "Отмена"
-                        Layout.fillWidth: parent
-                        Layout.fillHeight: parent
-                        Layout.margins: 10
-                        onClicked: {
-                            stackView.pop()
-                        }
-                    }
-                }
-            }
-            function onChangedDBDelete(newValue) {
-                txtSettingDelete.text = newValue
-            }
-            Component.onCompleted: {
-                datebaseCustoms.onDeleteDateClick.connect(onChangedDBDelete)
-            }
-        }
-    }
-
     Component {
         id: openViewDateBase
         Rectangle {

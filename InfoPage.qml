@@ -5,8 +5,7 @@ import Qt.labs.qmlmodels
 
 Rectangle {
     color: "#D8FFD1"
-    property StackView stackView: null // Свойство для связи со StackView
-
+    property StackView stackView: null
     ColumnLayout {
         anchors.fill: parent
         Button {
