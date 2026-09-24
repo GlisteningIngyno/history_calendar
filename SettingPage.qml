@@ -5,7 +5,6 @@ import Qt.labs.qmlmodels
 import QtQuick.Dialogs
 
 import datebase
-import "customcomponent"
 
 Rectangle {
     color: "#D8FFD1"

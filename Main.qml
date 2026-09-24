@@ -5,303 +5,149 @@ import clicker
 import Qt.labs.qmlmodels
 
 ApplicationWindow {
-    width: 650
-    height: 450
+    width: 300
+    height: 500
     visible: true
     title: qsTr("History Сalendar")
-    color: "#F9ECD9"
-    Clicker {
-        id: clicker
-    }
+    color: "#F2E0C8"
     StackView {
         id: stackViewTop
         anchors.fill: parent
         initialItem: mainPage
     }
+    FontLoader {
+        id: electrolize
+        source: "fonts/Electrolize-Regular.ttf"
+    }
     Component {
         id: mainPage
         ColumnLayout {
-            id: columnLayout
-            spacing: 10
-            Canvas {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 50
-                Layout.margins: 10
-                antialiasing: true
+            Button {
+                id: btSettings
+                height: 30
+                width: 30
+                Layout.leftMargin: 30
+                Layout.topMargin: 10
 
-                function createEllipse() {
-                    const context = getContext("2d")
-
-                    var radius = 5
-                    for (var i = 10; i < width; i += 35) {
-
-                        var topX = i
-                        var topY = 10
-                        var bottomX = i
-                        var bottomY = 40
-
-                        context.strokeStyle = "black"
-                        context.fillStyle = "white"
-                        context.lineWidth = 1
-
-                        context.beginPath()
-                        context.arc(topX, topY, radius, 0, 2 * Math.PI)
-                        context.fill()
-                        context.stroke()
-
-                        context.beginPath()
-                        context.arc(bottomX, bottomY, radius, 0, 2 * Math.PI)
-                        context.fill()
-                        context.stroke()
-
-                        context.strokeStyle = "#black"
-                        context.beginPath()
-                        context.moveTo(topX, topY)
-                        context.lineTo(bottomX, bottomY)
-                        context.stroke()
+                background: ColumnLayout {
+                    spacing: 3
+                    Rectangle {
+                        implicitWidth: 30
+                        implicitHeight: 5
+                        color: btSettings.pressed ? "#4E3C2B" : btSettings.hovered ? "#B8916A" : "#72583F"
+                    }
+                    Rectangle {
+                        implicitWidth: 30
+                        implicitHeight: 5
+                        color: btSettings.pressed ? "#4E3C2B" : btSettings.hovered ? "#B8916A" : "#72583F"
+                    }
+                    Rectangle {
+                        implicitWidth: 30
+                        implicitHeight: 5
+                        color: btSettings.pressed ? "#4E3C2B" : btSettings.hovered ? "#B8916A" : "#72583F"
                     }
                 }
-                onPaint: createEllipse()
+                //onClicked: {}
+            }
+            ColumnLayout {
+                Layout.leftMargin: 75
+                Text {
+                    id: txtDay
+                    text: qsTr("24")
+                    font.pixelSize: 128
+                    font.family: electrolize.name
+                    font.weight: Font.Normal
+                    // lineHeight: 0.5
+                }
+                Text {
+                    id: txtMonthYear
+                    text: qsTr("ноябрь 1999")
+                    font.pixelSize: 24
+                    font.family: electrolize.name
+                    font.weight: Font.Normal
+                }
+            }
+            ColumnLayout {
+                spacing: 10
+                Text {
+                    id: txtEventDay
+                    text: qsTr("Событие дня")
+                    font.pixelSize: 15
+                    font.family: electrolize.name
+                    font.weight: Font.Normal
+
+                    Layout.leftMargin: 30
+                }
+                Text {
+                    id: txtEventText
+                    text: qsTr("Запущен Ikonos-2 ")
+                    font.pixelSize: 15
+                    font.family: electrolize.name
+                    font.weight: Font.Normal
+                    font.underline: true
+
+                    Layout.leftMargin: 45
+                }
+                Text {
+                    id: txtEventMore
+                    text: qsTr("Больше событий...")
+                    font.pixelSize: 15
+                    font.family: electrolize.name
+                    font.weight: Font.Normal
+
+                    Layout.leftMargin: 30
+                }
             }
             GridLayout {
                 columns: 2
                 rows: 2
-                rowSpacing: 10
-                columnSpacing: 300
-                Layout.margins: 20
-                Flipable {
-                    id: flipable
-                    Layout.fillHeight: parent
-                    Layout.fillWidth: parent
-                    Layout.columnSpan: 2
-                    property bool flipped: false
-                    front: ColumnLayout {
-                        anchors.fill: parent //костыль
-                        Rectangle {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            color: "#F2E0C8"
-                            border.color: "#000000"
-                            border.width: 3
-                            radius: 10
-                            ColumnLayout {
-                                anchors.fill: parent
-                                Text {
-                                    id: txtTuesday
-                                    text: tuesdayDate
-                                    color: "#000000"
-                                    wrapMode: Text.Wrap
-                                    horizontalAlignment: Text.AlignHCenter
-                                    font.pixelSize: 48
-                                    font.styleName: "Inter"
-                                    font.underline: true
-                                    font.italic: true
+                columnSpacing: 60
+                Layout.leftMargin: 30
+                TextField {
+                    width: 260
+                    height: 25
+                    text: "Создать событие"
+                    font.pixelSize: 15
+                    font.family: electrolize.name
+                    font.weight: Font.Normal
+                    color: "black"
+                    wrapMode: Text.NoWrap
+                    clip: true
 
-                                    Layout.margins: 5
-                                    Layout.fillWidth: true
-                                }
-                                Text {
-                                    id: txtYesterday
-                                    text: yesterdayDate
-                                    color: "#000000"
-                                    wrapMode: Text.Wrap
-                                    horizontalAlignment: Text.AlignHCenter
-                                    font.pixelSize: 48
-                                    font.styleName: "Inter"
-                                    font.underline: true
-                                    font.italic: true
-
-                                    Layout.margins: 5
-                                    Layout.fillWidth: true
-                                }
-                                Text {
-                                    id: txtEvnt
-                                    text: eventDate
-                                    color: "#000000"
-                                    wrapMode: Text.Wrap
-                                    horizontalAlignment: Text.AlignHCenter
-                                    font.pixelSize: 24
-                                    font.styleName: "Inter"
-                                    font.underline: true
-                                    font.italic: true
-
-                                    Layout.margins: 5
-                                    Layout.fillWidth: true
-                                }
-                            }
-                        }
-                    }
-                    back: ColumnLayout {
-                        anchors.fill: parent
-                        Rectangle {
-                            color: "#F2E0C8"
-                            border.color: "#000000"
-                            border.width: 3
-                            radius: 10
-
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            ColumnLayout {
-                                anchors.fill: parent
-                                Text {
-                                    id: txtTuesday_
-                                    text: tuesdayDate
-                                    color: "#000000"
-                                    wrapMode: Text.Wrap
-                                    horizontalAlignment: Text.AlignHCenter
-                                    font.pixelSize: 48
-                                    font.styleName: "Inter"
-                                    font.underline: true
-                                    font.italic: true
-
-                                    Layout.margins: 5
-                                    Layout.fillWidth: true
-                                }
-                                Text {
-                                    id: txtYesterday_
-                                    text: yesterdayDate
-                                    color: "#000000"
-                                    wrapMode: Text.Wrap
-                                    horizontalAlignment: Text.AlignHCenter
-                                    font.pixelSize: 48
-                                    font.styleName: "Inter"
-                                    font.underline: true
-                                    font.italic: true
-
-                                    Layout.margins: 5
-                                    Layout.fillWidth: true
-                                }
-                                Text {
-                                    id: txtEvnt_
-                                    text: eventDate
-                                    color: "#000000"
-                                    wrapMode: Text.Wrap
-                                    horizontalAlignment: Text.AlignHCenter
-                                    font.pixelSize: 24
-                                    font.styleName: "Inter"
-                                    font.underline: true
-                                    font.italic: true
-
-                                    Layout.margins: 5
-                                    Layout.fillWidth: true
-                                }
-                            }
-                        }
-                    }
-
-                    transform: Rotation {
-                        id: rotation
-                        origin.x: flipable.width / 2
-                        origin.y: flipable.height / 2
-                        axis {
-                            x: 0
-                            y: 1
-                            z: 0
-                            //Для исчезновения листа
-                            // x: 1
-                            // y: 0
-                            // z: 1
-                        } // Вращаем вокруг вертикальной оси Y
-                        angle: 0 // Начальный угол
-                    }
-                    states: State {
-                        name: "back"
-                        when: flipable.flipped
-                        PropertyChanges {
-                            target: rotation
-                            angle: 180
-                        }
-                    }
-                    transitions: Transition {
-                        NumberAnimation {
-                            target: rotation
-                            property: "angle"
-                            duration: 500
-                        }
-                    }
-                    MouseArea {
-                        objectName: "mouseArea"
-                        anchors.fill: parent
-                        onClicked: {
-                            flipable.flipped = !flipable.flipped
-                            clicker.clickYesterday()
-                            clicker.clickEvent(txtYesterday_.text)
-                        }
-                    }
-                }
-                function onDateChaged(newValue) {
-                    txtYesterday_.text = newValue
-                    txtYesterday.text = newValue
-                }
-                function onEventChaged(newValue) {
-                    txtEvnt.text = newValue
-                    txtEvnt_.text = newValue
-                }
-                Component.onCompleted: {
-                    clicker.onClickYesterday.connect(onDateChaged)
-                    clicker.onClickEvent.connect(onEventChaged)
-                }
-
-                Button {
-                    id: settingsButton
-                    icon.source: "icons/cog.svg"
-                    icon.color: "transparent"
-                    icon.width: 32
-                    icon.height: 32
-
-                    Layout.fillWidth: parent
-                    Layout.margins: 5
                     background: Rectangle {
-
-                        implicitWidth: 32
-                        implicitHeight: 32
-                        color: settingsButton.pressed ? "#C6837C" : settingsButton.hovered ? "#FFF1DE" : "#F2E0C8"
-
-                        radius: 7
-                        border.width: 2.0
-                        border.color: "#000000"
-                    }
-                    onClicked: {
-                        stackViewTop.push(settingPage)
+                        implicitWidth: 160
+                        implicitHeight: 25
+                        color: "transparent"
                     }
                 }
-                //     Button {
-                //         id: manualButton
-                //         icon.source: "icons/info2.svg"
-                //         icon.color: "transparent"
-                //         icon.width: 32
-                //         icon.height: 32
-
-                //         Layout.fillWidth: parent
-                //         Layout.margins: 5
-                //         background: Rectangle {
-
-                //             implicitWidth: 32
-                //             implicitHeight: 32
-                //             color: manualButton.pressed ? "#C6837C" : manualButton.hovered ? "#FFF1DE" : "#F2E0C8"
-
-                //             radius: 7
-                //             border.width: 2.0
-                //             border.color: "#000000"
-                //         }
-                //         onClicked: {
-                //             stackViewTop.push(infoPages)
-                //         }
-                //     }
+                Button {
+                    id: btAddEvent
+                    width: 20
+                    height: 20
+                    background: Rectangle {
+                        implicitWidth: 20
+                        implicitHeight: 20
+                        radius: 50
+                        border.color: "black"
+                        color: btAddEvent.pressed ? "#4E3C2B" : btAddEvent.hovered ? "#B8916A" : "transparent"
+                        Text {
+                            anchors.centerIn: parent
+                            id: txtBtAddEvent
+                            text: qsTr("+")
+                            font.pixelSize: 30
+                            font.family: electrolize.name
+                            font.weight: Font.Normal
+                        }
+                    }
+                }
+                Rectangle {
+                    width: 100
+                    height: 3
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: parent
+                    color: "black"
+                }
             }
-        }
-    }
-
-    Component {
-        id: settingPage
-        SettingPage {
-            stackView: stackViewTop
-        }
-    }
-    Component {
-        id: infoPages
-        InfoPage {
-            stackView: stackViewTop
         }
     }
 }
