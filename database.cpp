@@ -212,8 +212,8 @@ void database:: printTableDB(){
     }
     while(query.next()){
         QVariantMap row;
-        row["date"] = " "+query.value("event_date").toString();
-        row["event"] = " "+query.value("event_text").toString();
+        row["date"] = query.value("event_date").toString();
+        row["event"] = "\t"+query.value("event_text").toString();
         finalDataList.append(row);
     }
     emit onPrintTableDB(finalDataList);

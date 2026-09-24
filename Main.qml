@@ -265,29 +265,29 @@ ApplicationWindow {
                         stackViewTop.push(settingPage)
                     }
                 }
-                Button {
-                    id: manualButton
-                    icon.source: "icons/info2.svg"
-                    icon.color: "transparent"
-                    icon.width: 32
-                    icon.height: 32
+                //     Button {
+                //         id: manualButton
+                //         icon.source: "icons/info2.svg"
+                //         icon.color: "transparent"
+                //         icon.width: 32
+                //         icon.height: 32
 
-                    Layout.fillWidth: parent
-                    Layout.margins: 5
-                    background: Rectangle {
+                //         Layout.fillWidth: parent
+                //         Layout.margins: 5
+                //         background: Rectangle {
 
-                        implicitWidth: 32
-                        implicitHeight: 32
-                        color: manualButton.pressed ? "#C6837C" : manualButton.hovered ? "#FFF1DE" : "#F2E0C8"
+                //             implicitWidth: 32
+                //             implicitHeight: 32
+                //             color: manualButton.pressed ? "#C6837C" : manualButton.hovered ? "#FFF1DE" : "#F2E0C8"
 
-                        radius: 7
-                        border.width: 2.0
-                        border.color: "#000000"
-                    }
-                    onClicked: {
-                        stackViewTop.push(infoPages)
-                    }
-                }
+                //             radius: 7
+                //             border.width: 2.0
+                //             border.color: "#000000"
+                //         }
+                //         onClicked: {
+                //             stackViewTop.push(infoPages)
+                //         }
+                //     }
             }
         }
     }
