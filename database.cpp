@@ -73,9 +73,6 @@ QString printEventDateBase(QString dateYesterday){
 }
 
 
-
-
-
 void database::addDateClick(QString date, QString event){
     if(date == " " || date == "" || date == nullptr ){
         emit onAddDateClick("Пустое значение даты!");
@@ -128,49 +125,7 @@ void database::deleteDateClick(QString date, QString event){
         emit onDeleteDateClick("Событие удалено!");
     }
 }
-void database::importFileClick(QUrl fileUrl){
-    QSqlDatabase db = QSqlDatabase::database();
-    if (!db.isOpen()) {
-        if (!db.open()) {
-            qDebug() << "Ошибка открытия БД:" << db.lastError().text();
-            emit onAddDateClick("Ошибка открытия БД");
-            return;
-        }
-    }
-    QString filePath = fileUrl.toLocalFile();
-    QFile file(filePath);
 
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        db.transaction();
-
-        QSqlQuery query(db);
-        query.prepare("INSERT INTO events (event_date, event_text) VALUES (:date, :text)");
-
-        QTextStream textStream(&file);
-        while (!textStream.atEnd()) {
-            QString line = textStream.readLine().trimmed();
-            if (line.isEmpty()) {
-                continue;
-            }
-            QStringList fields = line.split(',');
-            if (fields.size() < 2) {
-                qWarning() << "Пропущена некорректная строка:" << line;
-                continue;
-            }
-            query.bindValue(":date", fields[0].trimmed());
-            query.bindValue(":text", fields[1].trimmed());
-            if (!query.exec()) {
-                qWarning() << "Ошибка вставки строки:" << query.lastError().text();
-            }
-        }
-        emit onAddFileClick("База данных успешно обновлена");
-        db.commit();
-        file.close();
-
-    } else{
-        emit onAddFileClick("Файл не удалось открыть");
-    }
-}
 void database::deleteFileClick(){
 
     QSqlDatabase db = QSqlDatabase::database();
@@ -219,7 +174,51 @@ void database::printTableDB(){
     emit onPrintTableDB(finalDataList);
     return;
 }
-void database::exportFileCSV(){
+
+void database::importFileClick(QUrl fileUrl){
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        if (!db.open()) {
+            qDebug() << "Ошибка открытия БД:" << db.lastError().text();
+            emit onAddDateClick("Ошибка открытия БД");
+            return;
+        }
+    }
+    QString filePath = fileUrl.toLocalFile();
+    QFile file(filePath);
+
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        db.transaction();
+
+        QSqlQuery query(db);
+        query.prepare("INSERT INTO events (event_date, event_text) VALUES (:date, :text)");
+
+        QTextStream textStream(&file);
+        while (!textStream.atEnd()) {
+            QString line = textStream.readLine().trimmed();
+            if (line.isEmpty()) {
+                continue;
+            }
+            QStringList fields = line.split(',');
+            if (fields.size() < 2) {
+                qWarning() << "Пропущена некорректная строка:" << line;
+                continue;
+            }
+            query.bindValue(":date", fields[0].trimmed());
+            query.bindValue(":text", fields[1].trimmed());
+            if (!query.exec()) {
+                qWarning() << "Ошибка вставки строки:" << query.lastError().text();
+            }
+        }
+        emit onAddFileClick("База данных успешно обновлена");
+        db.commit();
+        file.close();
+
+    } else{
+        emit onAddFileClick("Файл не удалось открыть");
+    }
+}
+void database::exportFileCSV(QUrl filePath){
     QSqlDatabase db = QSqlDatabase::database();
     if(!db.isOpen()){
         if (!db.open()) {
@@ -236,8 +235,9 @@ void database::exportFileCSV(){
         emit onExportFileCSV("Ошибка выполнения запроса");
         return;
     }
+
     std::ofstream outResultFile;
-    outResultFile.open("HistoryCalendar.csv");
+    outResultFile.open(filePath.toLocalFile().toStdString());
     while(query.next()){
         outResultFile << query.value("event_date").toString().toStdString() <<
             "," << query.value("event_text").toString().toStdString() << "\n";

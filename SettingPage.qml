@@ -11,14 +11,24 @@ GridLayout {
         id: dateBaseCust
     }
     FileDialog {
-        id: fileDialogM
+        id: fileDialogUpload
         onAccepted: {
-
-            // let fullUri = fileDialogM.fileUrl
-            // dateBaseCust.importFileClick(fullUri)
+            console.log("You chose: " + fileDialogUpload.selectedFile)
+            dateBaseCust.importFileClick(fileDialogUpload.selectedFile)
         }
         onRejected: {
-            qDepub() << "Отмена импорта"
+            console.log("Отмена импорта")
+        }
+    }
+    FileDialog {
+        id: fileDialogDownload
+        fileMode: FileDialog.SaveFile
+        onAccepted: {
+            console.log("You chose: " + fileDialogDownload.selectedFile)
+            dateBaseCust.exportFileCSV(fileDialogDownload.selectedFile)
+        }
+        onRejected: {
+            console.log("Отмена экспорта")
         }
     }
 
@@ -82,14 +92,6 @@ GridLayout {
             implicitWidth: 20
             implicitHeight: 20
             color: btAddEvent2.pressed ? "#4E3C2B" : btAddEvent2.hovered ? "#B8916A" : "#72583F"
-            Text {
-                anchors.centerIn: parent
-                id: txtBtAddEvent
-                text: qsTr("+")
-                font.pixelSize: 30
-                font.family: electrolize.name
-                font.weight: Font.Normal
-            }
         }
     }
     Button {
@@ -128,7 +130,7 @@ GridLayout {
             color: btImportFile.pressed ? "#4E3C2B" : btImportFile.hovered ? "#B8916A" : "#F2E0C8"
         }
         onClicked: {
-            fileDialogM.open()
+            fileDialogDownload.open()
         }
     }
     Button {
@@ -147,6 +149,9 @@ GridLayout {
             implicitWidth: 20
             implicitHeight: 20
             color: btExportFile.pressed ? "#4E3C2B" : btExportFile.hovered ? "#B8916A" : "#72583F"
+        }
+        onClicked: {
+            fileDialogUpload.open()
         }
     }
 }

@@ -18,7 +18,7 @@ public:
     Q_INVOKABLE void importFileClick(QUrl filePath);
     Q_INVOKABLE void deleteFileClick();
     Q_INVOKABLE void printTableDB();
-    Q_INVOKABLE void exportFileCSV();
+    Q_INVOKABLE void exportFileCSV(QUrl filePath);
 
 signals:
     void onAddDateClick(QString);
