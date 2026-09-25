@@ -15,7 +15,7 @@ public:
 
     Q_INVOKABLE void addDateClick(QString date, QString event);
     Q_INVOKABLE void deleteDateClick(QString date, QString event);
-    Q_INVOKABLE void addFileClick(QUrl filePath);
+    Q_INVOKABLE void importFileClick(QUrl filePath);
     Q_INVOKABLE void deleteFileClick();
     Q_INVOKABLE void printTableDB();
     Q_INVOKABLE void exportFileCSV();

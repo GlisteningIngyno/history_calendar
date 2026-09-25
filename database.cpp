@@ -9,7 +9,7 @@
 #include <QVariantList>
 
 
-#include <iostream>
+//#include <iostream>
 #include <fstream>
 
 
@@ -37,7 +37,8 @@ void initDatabase() {
     if (!query.exec("CREATE TABLE IF NOT EXISTS events ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     "event_date TEXT, "
-                    "event_text TEXT)")) {
+                    "event_text TEXT"
+                    ")")) {
         qDebug() << "Ошибка создания таблицы:" << query.lastError().text();
     }
     db.close();
@@ -53,7 +54,8 @@ QString printEventDateBase(QString dateYesterday){
     }
 
     QSqlQuery query(db);
-    query.prepare("SELECT event_text FROM events WHERE event_date = :dateYesterday");
+
+    query.prepare("SELECT event_text FROM events WHERE event_date = :dateYesterday LIMIT 1");
     query.bindValue(":dateYesterday", dateYesterday);
     if (!query.exec()) {
         qDebug() << "Ошибка вывода данных:" << query.lastError().text();
@@ -126,8 +128,7 @@ void database::deleteDateClick(QString date, QString event){
         emit onDeleteDateClick("Событие удалено!");
     }
 }
-
-void database::addFileClick(QUrl fileUrl){
+void database::importFileClick(QUrl fileUrl){
     QSqlDatabase db = QSqlDatabase::database();
     if (!db.isOpen()) {
         if (!db.open()) {
@@ -191,8 +192,7 @@ void database::deleteFileClick(){
     }
     return;
 }
-
-void database:: printTableDB(){
+void database::printTableDB(){
     QVariantList finalDataList;
     QSqlDatabase db = QSqlDatabase::database();
     if (!db.isOpen()) {
@@ -219,7 +219,6 @@ void database:: printTableDB(){
     emit onPrintTableDB(finalDataList);
     return;
 }
-
 void database::exportFileCSV(){
     QSqlDatabase db = QSqlDatabase::database();
     if(!db.isOpen()){

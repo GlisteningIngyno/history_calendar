@@ -10,12 +10,11 @@
 #include <QStandardPaths>
 #include <QDebug>
 
-#include <clicker.h>
 #include "database.h"
+#include <QVariantMap>
 
 void initDatabase();
 void addEventDatebase();
-void deleteEventDatebase();
 QString printEventDateBase(QString dateYesterday);
 
 int main(int argc, char *argv[])
@@ -25,24 +24,47 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/HistoryProject2/Main.qml"));
 
-    QDate dateDay = QDate::currentDate();
-    engine.rootContext()->setContextProperty("tuesdayDate", dateDay.toString("yyyy-MM-dd"));
 
-    qmlRegisterType<clicker>("clicker", 1, 0,"Clicker");
     qmlRegisterType<database>("datebase",1,0,"Datebase");
 
+    QVariantMap settings = {
+        {"1", "январь"},
+        {"2", "февраль"},
+        {"3", "март"},
+        {"4", "апрель"},
+        {"5", "май"},
+        {"6", "июнь"},
+        {"7", "июль"},
+        {"8", "август"},
+        {"9", "сентябрь"},
+        {"10", "октябрь"},
+        {"11", "ноябрь"},
+        {"12", "декабрь"},
+    };
+
+    QDate dateDay = QDate::currentDate();
     int current = QRandomGenerator::global()->bounded(1,121);
     int yyTuesday =  dateDay.year()-current;
     int mmTuesday = dateDay.month();
     int ddTuesday = dateDay.day();
-    QDate dateYesterday(yyTuesday,mmTuesday,ddTuesday);
-    engine.rootContext()->setContextProperty("yesterdayDate", dateYesterday.toString("yyyy-MM-dd"));
+
+
+    QString numberYear = QString::fromStdString(std::to_string(yyTuesday));
+    QString numberMonth = QString::fromStdString(std::to_string(mmTuesday));
+    QString result = "ПУСТO";
+    if(settings.contains(numberMonth)){
+        result = settings[numberMonth].toString()+" "+numberYear;
+    }
+    engine.rootContext()->setContextProperty("txtDayComp", ddTuesday);
+    engine.rootContext()->setContextProperty("txtYearComp", result);
 
     initDatabase();
+    QDate dateYesterday(yyTuesday,mmTuesday,ddTuesday);
     QString eventStr = printEventDateBase(dateYesterday.toString("yyyy-MM-dd"));
-    engine.rootContext()->setContextProperty("eventDate",eventStr);
-    engine.load(url);
+    engine.rootContext()->setContextProperty("txtEventDateComp",eventStr);
 
+    engine.load(url);
     return app.exec();
 }
+
 

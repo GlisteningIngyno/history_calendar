@@ -6,252 +6,147 @@ import QtQuick.Dialogs
 
 import datebase
 
-Rectangle {
-    color: "#D8FFD1"
-    property StackView stackView: null
+GridLayout {
     Datebase {
-        id: datebaseCustoms
+        id: dateBaseCust
     }
     FileDialog {
-        id: fileDialog
-        title: "Please choose a file"
-
+        id: fileDialogM
         onAccepted: {
-            console.log("You chose: " + fileDialog.selectedFile)
-            datebaseCustoms.addFileClick(fileDialog.selectedFile)
+
+            // let fullUri = fileDialogM.fileUrl
+            // dateBaseCust.importFileClick(fullUri)
         }
         onRejected: {
-            console.log("Canceled")
-        }
-    }
-    Dialog {
-        id: dialog
-        title: "Вы уверены, что хотите очистить таблицу?"
-
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        implicitWidth: parent.width / 2
-        implicitHeight: parent.height / 2
-
-        anchors.centerIn: parent
-
-        onAccepted: {
-            console.log("Очистка содержимого таблицы!")
-            datebaseCustoms.deleteFileClick()
-        }
-        onRejected: {
-            console.log("Отмена чистки!")
+            qDepub() << "Отмена импорта"
         }
     }
 
-    ColumnLayout {
-        anchors.fill: parent
-        Text {
-            text: "Настройки"
-            wrapMode: Text.Wrap
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: 48
-            font.styleName: "Inter"
-            Layout.fillWidth: parent
-            Layout.margins: 10
+    columns: 2
+    rows: 3
+    columnSpacing: 0
+    rowSpacing: 0
+    property StackView stackView: null
+    Button {
+        id: btPrintDB
+        width: 20
+        height: 20
+        Layout.fillWidth: parent
+        Layout.fillHeight: parent
+
+        icon.width: 64
+        icon.height: 64
+        icon.color: "transparent"
+        icon.source: "icons/reply-left"
+
+        background: Rectangle {
+            implicitWidth: 20
+            implicitHeight: 20
+            color: btPrintDB.pressed ? "#4E3C2B" : btPrintDB.hovered ? "#B8916A" : "#F2E0C8"
         }
-        Rectangle {
-            color: "#A1FA91"
-            border.color: "#2A5722"
-            border.width: 3
-            radius: 5
-
-            Layout.fillWidth: parent
-            Layout.fillHeight: parent
-            Layout.margins: 10
-
-            GridLayout {
-                anchors.fill: parent
-                anchors.margins: 5
-                columns: 3
-                rows: 4
-                columnSpacing: 5
-                Text {
-                    text: "Добавить дату или файл"
-                    font.pixelSize: 20
-                    horizontalAlignment: Text.AlignHCenter
-                    Layout.fillWidth: parent
-                }
-                CustomButton {
-                    textCustom: "Добавить"
-                    Layout.fillWidth: parent
-                    Layout.margins: 2
-                    onClicked: {
-                        stackView.push(addEventDate)
-                    }
-                }
-                CustomButton {
-                    textCustom: "Файл"
-                    Layout.fillWidth: parent
-                    Layout.margins: 2
-                    onClicked: {
-                        fileDialog.open()
-                    }
-                }
-                Text {
-                    text: "Очистить содержимое таблицы"
-                    font.pixelSize: 20
-                    horizontalAlignment: Text.AlignHCenter
-
-                    Layout.fillWidth: parent
-                    Layout.margins: 2
-                    Layout.leftMargin: 10
-                }
-                CustomButton {
-                    textCustom: "Очистить"
-                    Layout.fillWidth: parent
-                    Layout.margins: 2
-                    Layout.columnSpan: 2
-                    onClicked: {
-                        dialog.open()
-                    }
-                }
-                Text {
-                    text: "Таблица данных"
-                    font.pixelSize: 20
-                    horizontalAlignment: Text.AlignHCenter
-                    Layout.fillWidth: parent
-                }
-                CustomButton {
-                    textCustom: "Смотреть"
-                    Layout.fillWidth: parent
-                    Layout.columnSpan: 2
-                    Layout.margins: 2
-                    onClicked: {
-                        stackView.push(openViewDateBase)
-                    }
-                }
-                Text {
-                    text: "Экспорт данных"
-                    font.pixelSize: 20
-                    horizontalAlignment: Text.AlignHCenter
-                    Layout.fillWidth: parent
-                }
-                CustomButton {
-                    textCustom: "Экпорт"
-                    Layout.fillWidth: parent
-                    Layout.columnSpan: 2
-                    Layout.margins: 2
-                    onClicked: {
-                        datebaseCustoms.exportFileCSV()
-                    }
-                }
-                function onFileAddDateChaged(newValue) {
-                    txtAddEventFile.text = newValue
-                    txtAddEventFile.visible = true
-                }
-                function onFileDeleteChanded(newValue) {
-                    txtAddEventFile.text = newValue
-                    txtAddEventFile.visible = true
-                }
-                function onExportFile_(newValue) {
-                    txtAddEventFile.text = newValue
-                    txtAddEventFile.visible = true
-                }
-
-                Component.onCompleted: {
-                    datebaseCustoms.onDeleteFileClick.connect(
-                                onFileDeleteChanded)
-                    datebaseCustoms.onAddFileClick.connect(onFileAddDateChaged)
-                    datebaseCustoms.onExportFileCSV.connect(onExportFile_)
-                }
-            }
+        onClicked: {
+            stackViewTop.pop()
         }
-        RowLayout {
-            Layout.fillWidth: parent
-            Button {
-                id: homeButton
-                icon.source: "icons/house.svg"
-                icon.color: "transparent"
-                icon.width: 32
-                icon.height: 32
+    }
+    Button {
+        id: btReturn
+        width: 20
+        height: 20
+        Layout.fillWidth: parent
+        Layout.fillHeight: parent
 
-                Layout.margins: 15
+        icon.width: 64
+        icon.height: 64
+        icon.color: "transparent"
+        icon.source: "icons/search"
 
-                background: Rectangle {
-                    implicitWidth: 52
-                    implicitHeight: 52
+        background: Rectangle {
+            implicitWidth: 20
+            implicitHeight: 20
+            color: btReturn.pressed ? "#4E3C2B" : btReturn.hovered ? "#B8916A" : "#72583F"
+        }
+    }
+    Button {
+        id: btAddEvent2
+        width: 20
+        height: 20
+        Layout.fillWidth: parent
+        Layout.fillHeight: parent
 
-                    color: homeButton.pressed ? "#1fa307" : homeButton.hovered ? "#bafbae" : "#A1FA91"
-                    border.color: "#2A5722"
-                    border.width: 3
-                    radius: 10
-                }
-                onClicked: {
-                    stackView.pop()
-                }
-            }
+        icon.width: 64
+        icon.height: 64
+        icon.color: "transparent"
+        icon.source: "icons/plus"
+
+        background: Rectangle {
+            implicitWidth: 20
+            implicitHeight: 20
+            color: btAddEvent2.pressed ? "#4E3C2B" : btAddEvent2.hovered ? "#B8916A" : "#72583F"
             Text {
-                id: txtAddEventFile
-                text: ""
-                visible: false
+                anchors.centerIn: parent
+                id: txtBtAddEvent
+                text: qsTr("+")
+                font.pixelSize: 30
+                font.family: electrolize.name
+                font.weight: Font.Normal
             }
         }
     }
+    Button {
+        id: btDeleteEvent2
+        width: 20
+        height: 20
+        Layout.fillWidth: parent
+        Layout.fillHeight: parent
 
-    Component {
-        id: addEventDate
-        CustomAddDeletePage {
-            stackView: stackViewTop
+        icon.width: 64
+        icon.height: 64
+        icon.color: "transparent"
+        icon.source: "icons/minus"
+
+        background: Rectangle {
+            implicitWidth: 20
+            implicitHeight: 20
+            color: btDeleteEvent2.pressed ? "#4E3C2B" : btDeleteEvent2.hovered ? "#B8916A" : "#F2E0C8"
         }
     }
-    Component {
-        id: openViewDateBase
-        Rectangle {
-            ColumnLayout {
-                anchors.fill: parent
+    Button {
+        id: btImportFile
+        width: 20
+        height: 20
+        Layout.fillWidth: parent
+        Layout.fillHeight: parent
 
-                TableModel {
-                    id: userTable
-                    TableModelColumn {
-                        display: "date"
-                    }
-                    TableModelColumn {
-                        display: "event"
-                    }
-                    rows: []
-                }
+        icon.width: 64
+        icon.height: 64
+        icon.color: "transparent"
+        icon.source: "icons/download"
 
-                TableView {
-                    model: userTable
-                    delegate: Text {
-                        text: model.display
-                    }
-                    Layout.fillWidth: parent
-                    Layout.fillHeight: parent
-                    Layout.margins: 30
-                }
-                RowLayout {
-                    CustomButton {
-                        pixelSizeCustom: 35
-                        textCustom: "Отмена"
-                        Layout.fillWidth: parent
-                        Layout.margins: 10
-                        onClicked: {
-                            stackView.pop()
-                        }
-                    }
-                    CustomButton {
-                        pixelSizeCustom: 35
-                        textCustom: "Вывести БД"
-                        Layout.fillWidth: parent
-                        Layout.margins: 10
-                        onClicked: {
-                            datebaseCustoms.printTableDB()
-                        }
-                    }
-                }
-            }
-            Connections {
-                target: datebaseCustoms
-                function onOnPrintTableDB(dataList) {
-                    userTable.rows = dataList
-                }
-            }
+        background: Rectangle {
+            implicitWidth: 20
+            implicitHeight: 20
+            color: btImportFile.pressed ? "#4E3C2B" : btImportFile.hovered ? "#B8916A" : "#F2E0C8"
+        }
+        onClicked: {
+            fileDialogM.open()
+        }
+    }
+    Button {
+        id: btExportFile
+        width: 20
+        height: 20
+        Layout.fillWidth: parent
+        Layout.fillHeight: parent
+
+        icon.width: 64
+        icon.height: 64
+        icon.color: "transparent"
+        icon.source: "icons/upload"
+
+        background: Rectangle {
+            implicitWidth: 20
+            implicitHeight: 20
+            color: btExportFile.pressed ? "#4E3C2B" : btExportFile.hovered ? "#B8916A" : "#72583F"
         }
     }
 }

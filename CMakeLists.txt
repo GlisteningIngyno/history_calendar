@@ -19,13 +19,17 @@ qt_add_qml_module(appHistoryProject2
     QML_FILES
         Main.qml
     RESOURCES
-        #ОБЯЗАТЕЛЬНО поменить в репозитории Иконки
-        SOURCES clicker.h clicker.cpp
+        #ОБЯЗАТЕЛЬНО пометить в репозитории Иконки
         SOURCES database.h database.cpp
         QML_FILES SettingPage.qml
         fonts/Electrolize-Regular.ttf
-        #QML_FILES customcomponent/CustomButton.qml
-        #QML_FILES customcomponent/CustomAddDeletePage.qml
+        icons/download.svg
+        icons/upload.svg
+        icons/minus.svg
+        icons/plus.svg
+        icons/search.svg
+        icons/reply-left.svg
+
 )
 
 

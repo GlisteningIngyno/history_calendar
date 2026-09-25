@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import clicker
 import Qt.labs.qmlmodels
 
 ApplicationWindow {
@@ -47,13 +46,16 @@ ApplicationWindow {
                         color: btSettings.pressed ? "#4E3C2B" : btSettings.hovered ? "#B8916A" : "#72583F"
                     }
                 }
-                //onClicked: {}
+                onClicked: {
+                    stackViewTop.push(pageSettings)
+                }
             }
+            //Главное поле
             ColumnLayout {
                 Layout.leftMargin: 75
                 Text {
                     id: txtDay
-                    text: qsTr("24")
+                    text: txtDayComp
                     font.pixelSize: 128
                     font.family: electrolize.name
                     font.weight: Font.Normal
@@ -61,7 +63,7 @@ ApplicationWindow {
                 }
                 Text {
                     id: txtMonthYear
-                    text: qsTr("ноябрь 1999")
+                    text: txtYearComp
                     font.pixelSize: 24
                     font.family: electrolize.name
                     font.weight: Font.Normal
@@ -80,7 +82,7 @@ ApplicationWindow {
                 }
                 Text {
                     id: txtEventText
-                    text: qsTr("Запущен Ikonos-2 ")
+                    text: txtEventDateComp
                     font.pixelSize: 15
                     font.family: electrolize.name
                     font.weight: Font.Normal
@@ -88,6 +90,7 @@ ApplicationWindow {
 
                     Layout.leftMargin: 45
                 }
+                //Переделать в кнопку
                 Text {
                     id: txtEventMore
                     text: qsTr("Больше событий...")
@@ -98,6 +101,7 @@ ApplicationWindow {
                     Layout.leftMargin: 30
                 }
             }
+            //Нижняя панель
             GridLayout {
                 columns: 2
                 rows: 2
@@ -149,5 +153,9 @@ ApplicationWindow {
                 }
             }
         }
+    }
+    Component {
+        id: pageSettings
+        SettingPage {}
     }
 }
