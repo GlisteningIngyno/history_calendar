@@ -31,6 +31,11 @@ GridLayout {
             console.log("Отмена экспорта")
         }
     }
+    Component{
+        id: pageList
+        ListPage{}
+
+    }
 
     columns: 2
     rows: 3
@@ -38,7 +43,7 @@ GridLayout {
     rowSpacing: 0
     property StackView stackView: null
     Button {
-        id: btPrintDB
+        id: btReturn
         width: 20
         height: 20
         Layout.fillWidth: parent
@@ -52,14 +57,14 @@ GridLayout {
         background: Rectangle {
             implicitWidth: 20
             implicitHeight: 20
-            color: btPrintDB.pressed ? "#4E3C2B" : btPrintDB.hovered ? "#B8916A" : "#F2E0C8"
+            color: btReturn.pressed ? "#4E3C2B" : btReturn.hovered ? "#B8916A" : "#F2E0C8"
         }
         onClicked: {
             stackViewTop.pop()
         }
     }
     Button {
-        id: btReturn
+        id: btPrintDB
         width: 20
         height: 20
         Layout.fillWidth: parent
@@ -73,7 +78,10 @@ GridLayout {
         background: Rectangle {
             implicitWidth: 20
             implicitHeight: 20
-            color: btReturn.pressed ? "#4E3C2B" : btReturn.hovered ? "#B8916A" : "#72583F"
+            color: btPrintDB.pressed ? "#4E3C2B" : btPrintDB.hovered ? "#B8916A" : "#72583F"
+        }
+        onClicked: {
+            stackViewTop.push(pageList)
         }
     }
     Button {
