@@ -1,3 +1,4 @@
+
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
@@ -11,25 +12,32 @@ Item {
     Datebase{
         id: dateBaseCreate
     }
+    ItemPage {
+        id: itemPageTemp
+    }
     ColumnLayout{
         anchors.fill: parent
-        Button {
-            id: btTopBar
-            width: 32
-            height: 64
-            icon.width: 32
-            icon.height: 32
-            icon.color: "transparent"
-            icon.source: "icons/reply-left"
-
+        RowLayout{
             Layout.fillWidth: true
-            background: Rectangle {
-                implicitWidth: 32
-                implicitHeight: 32
-                color: btTopBar.pressed ? "#4E3C2B" : btTopBar.hovered ? "#B8916A" : "#F2E0C8"
-            }
-            onClicked: {
-                stackViewTop.pop()
+            Button {
+                id: btTopBar
+                width: 32
+
+                height: 32
+                icon.width: 32
+                icon.height: 32
+                icon.color: "transparent"
+                icon.source: "icons/reply-left"
+
+                Layout.fillWidth: true
+                background: Rectangle {
+                    implicitWidth: 32
+                    implicitHeight: 32
+                    color: btTopBar.pressed ? "#4E3C2B" : btTopBar.hovered ? "#B8916A" : "#F2E0C8"
+                }
+                onClicked: {
+                    stackViewTop.pop()
+                }
             }
         }
         ColumnLayout{
@@ -38,9 +46,9 @@ Item {
             ListView {
                 id: listView
                 orientation: Qt.Vertical
-                spacing: 8
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                clip: true
                 model: ListModel {
                     id:listModel
                 }
@@ -49,7 +57,9 @@ Item {
                     height: 56
                     Rectangle {
                         anchors.fill: parent
-                        color: "#BF847E"
+                        opacity: 1.0
+                        color: "#FFCEB6"
+
                         RowLayout {
                             anchors.fill: parent
                             anchors.leftMargin: 12
@@ -83,6 +93,23 @@ Item {
                                 Layout.alignment: Qt.AlignVCenter
                             }
                         }
+                        MouseArea {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked:{
+                                parent.color = "#BF847E"
+                                console.log("Clicked:", model.date)
+                                itemPageTemp.txtDataVal = model.date
+                                itemPageTemp.txtEventVal = model.event
+                                stackViewTop.push(itemPageTemp)
+                            }
+                            onEntered:{
+                                parent.color = "#FA968C"
+                            }
+                            onExited: {
+                                parent.color = "#FFCEB6"
+                            }
+                        }
                     }
                     Rectangle {
                         anchors.bottom: parent.bottom
@@ -90,10 +117,6 @@ Item {
                         anchors.right: parent.right
                         height: 1
                         color: "#b8a48e"
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: console.log("Clicked:", model.date)
                     }
                 }
             }
@@ -106,7 +129,7 @@ Item {
                        listModel.append(dataList[i])
                    }
                }
-           }
+        }
         Component.onCompleted: {
             dateBaseCreate.printTableDB()
         }

@@ -83,12 +83,18 @@ ApplicationWindow {
                 Text {
                     id: txtEventText
                     text: txtEventDateComp
+
                     font.pixelSize: 15
                     font.family: electrolize.name
                     font.weight: Font.Normal
                     font.underline: true
 
+                    wrapMode: Text.Wrap
+
+                    Layout.fillWidth: parent
                     Layout.leftMargin: 45
+                    Layout.rightMargin: 15
+
                 }
                 //Переделать в кнопку
                 Text {

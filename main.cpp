@@ -55,12 +55,17 @@ int main(int argc, char *argv[])
     if(settings.contains(numberMonth)){
         result = settings[numberMonth].toString()+" "+numberYear;
     }
+    // engine.rootContext()->setContextProperty("txtDayComp", ddTuesday);
+    // engine.rootContext()->setContextProperty("txtYearComp", result);
+
     engine.rootContext()->setContextProperty("txtDayComp", ddTuesday);
-    engine.rootContext()->setContextProperty("txtYearComp", result);
+    engine.rootContext()->setContextProperty("txtYearComp", "сентябрь 1922");
 
     initDatabase();
     QDate dateYesterday(yyTuesday,mmTuesday,ddTuesday);
-    QString eventStr = printEventDateBase(dateYesterday.toString("yyyy-MM-dd"));
+    //QString eventStr = printEventDateBase(dateYesterday.toString("yyyy-MM-dd"));
+    QString eventStr = printEventDateBase("1922-09-29");
+
     engine.rootContext()->setContextProperty("txtEventDateComp",eventStr);
 
     engine.load(url);

@@ -162,4 +162,15 @@ GridLayout {
             fileDialogUpload.open()
         }
     }
+    //Reset DB
+    Button{
+        width: 20
+        height: 20
+        Layout.fillWidth: parent
+        Layout.fillHeight: parent
+        visible: false
+        onClicked: {
+            dateBaseCust.deleteFileClick()
+        }
+    }
 }
