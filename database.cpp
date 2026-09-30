@@ -63,7 +63,7 @@ QString printEventDateBase(QString dateYesterday){
     }
     if(query.first()){
         country = query.value(0).toString();
-        qDebug() << "Успешное выполнение" << query.lastError().text();
+        qDebug() << "Успешное выполнение";
 
     }else{
         qDebug() << "События на " << dateYesterday << " нет";
@@ -168,12 +168,43 @@ void database::printTableDB(){
     while(query.next()){
         QVariantMap row;
         row["date"] = query.value("event_date").toString();
-        row["event"] = "\t"+query.value("event_text").toString();
+        row["event"] = query.value("event_text").toString();
         finalDataList.append(row);
     }
     emit onPrintTableDB(finalDataList);
     return;
 }
+void database::printTableDB(QString date){
+    qDebug() << date;
+    QVariantList finalDataList;
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        if (!db.open()) {
+            qDebug() << "Ошибка открытия БД:" << db.lastError().text();
+
+            emit onPrintTableDB(finalDataList);
+            return;
+        }
+    }
+    QSqlQuery query(db);
+    query.prepare("SELECT event_date, event_text FROM events WHERE event_date = :date");
+    query.bindValue(":date", date);
+
+    if (!query.exec()) {
+        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+        emit onPrintTableDB(finalDataList);
+        return;
+    }
+    while(query.next()){
+        QVariantMap row;
+        row["date"] = query.value("event_date").toString();
+        row["event"] = query.value("event_text").toString();
+        finalDataList.append(row);
+    }
+    emit onPrintTableDB(finalDataList);
+    return;
+}
+
 
 void database::importFileClick(QUrl fileUrl){
     QSqlDatabase db = QSqlDatabase::database();

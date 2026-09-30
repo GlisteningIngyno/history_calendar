@@ -20,7 +20,7 @@ Item {
         RowLayout{
             Layout.fillWidth: true
             Button {
-                id: btTopBar
+                id: btReturn
                 width: 32
 
                 height: 32
@@ -33,10 +33,89 @@ Item {
                 background: Rectangle {
                     implicitWidth: 32
                     implicitHeight: 32
-                    color: btTopBar.pressed ? "#4E3C2B" : btTopBar.hovered ? "#B8916A" : "#F2E0C8"
+                    color: btReturn.pressed ? "#4E3C2B" : btReturn.hovered ? "#B8916A" : "#F2E0C8"
                 }
                 onClicked: {
                     stackViewTop.pop()
+                }
+            }
+            Button {
+                id: btSearchPosition
+                width: 32
+
+                height: 32
+                icon.width: 32
+                icon.height: 32
+                icon.color: "transparent"
+                icon.source: "icons/search"
+
+                Layout.fillWidth: true
+                background: Rectangle {
+                    implicitWidth: 32
+                    implicitHeight: 32
+                    color: btSearchPosition.pressed ? "#4E3C2B" : btSearchPosition.hovered ? "#B8916A" : "#F2E0C8"
+                }
+                onClicked: {
+                    btReturn.visible = false
+                    btSearchPosition.visible = false
+
+                    txtFieldSearch.visible = true
+                    btCross.visible = true
+                }
+            }
+            Button {
+                id: btCross
+                width: 32
+                height: 32
+                icon.width: 32
+                icon.height: 32
+                icon.color: "transparent"
+                icon.source: "icons/cross"
+                visible: false
+                Layout.fillWidth: true
+                background: Rectangle {
+                    implicitWidth: 32
+                    implicitHeight: 32
+                    color: btCross.pressed ? "#4E3C2B" : btCross.hovered ? "#B8916A" : "#F2E0C8"
+                }
+                onClicked: {
+                    btReturn.visible = true
+                    btSearchPosition.visible = true
+
+                    txtFieldSearch.visible = false
+                    btCross.visible = false
+
+
+
+                    dateBaseCreate.printTableDB()
+
+                }
+            }
+            TextField{
+                id: txtFieldSearch
+                visible: false
+
+                text: "Введите дату"
+                color: "black"
+                wrapMode: Text.NoWrap
+                clip: true
+                font.pixelSize: 15
+                font.weight: Font.Normal
+
+                Layout.fillWidth: parent
+                background: Rectangle {
+                    implicitWidth: 160
+                    implicitHeight: 25
+                    color: "transparent"
+                }
+                onAccepted: {
+                    if(txtFieldSearch.text === ""){
+                        dateBaseCreate.printTableDB()
+                    }
+                    else{
+                        dateBaseCreate.printTableDB(txtFieldSearch.text)
+                        itemPageTemp.visible = false
+                    }
                 }
             }
         }
@@ -59,7 +138,6 @@ Item {
                         anchors.fill: parent
                         opacity: 1.0
                         color: "#FFCEB6"
-
                         RowLayout {
                             anchors.fill: parent
                             anchors.leftMargin: 12
@@ -101,6 +179,7 @@ Item {
                                 console.log("Clicked:", model.date)
                                 itemPageTemp.txtDataVal = model.date
                                 itemPageTemp.txtEventVal = model.event
+                                console.log("Model.Event:", model.event)
                                 stackViewTop.push(itemPageTemp)
                             }
                             onEntered:{

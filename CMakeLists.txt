@@ -29,6 +29,7 @@ qt_add_qml_module(appHistoryProject2
         icons/plus.svg
         icons/search.svg
         icons/reply-left.svg
+        icons/cross.svg
         QML_FILES ListPage.qml
         QML_FILES ItemPage.qml
 
