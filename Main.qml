@@ -52,14 +52,14 @@ ApplicationWindow {
             }
             //Главное поле
             ColumnLayout {
-                Layout.leftMargin: 75
+                Layout.leftMargin: 65
+
                 Text {
                     id: txtDay
                     text: txtDayComp
                     font.pixelSize: 128
                     font.family: electrolize.name
                     font.weight: Font.Normal
-                    // lineHeight: 0.5
                 }
                 Text {
                     id: txtMonthYear
@@ -67,10 +67,12 @@ ApplicationWindow {
                     font.pixelSize: 24
                     font.family: electrolize.name
                     font.weight: Font.Normal
+
                 }
             }
             ColumnLayout {
                 spacing: 10
+                Layout.fillHeight: parent
                 Text {
                     id: txtEventDay
                     text: qsTr("Событие дня")
@@ -90,7 +92,6 @@ ApplicationWindow {
                     font.underline: true
 
                     wrapMode: Text.Wrap
-
                     Layout.fillWidth: parent
                     Layout.leftMargin: 45
                     Layout.rightMargin: 15

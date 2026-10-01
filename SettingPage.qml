@@ -31,6 +31,21 @@ GridLayout {
             console.log("Отмена экспорта")
         }
     }
+    Dialog {
+        id: dialog
+        title: "Вы, уверены?"
+        standardButtons: Dialog.Ok | Dialog.Cancel
+
+        anchors.centerIn: parent
+
+        onAccepted: {
+            dateBaseCust.deleteFileClick()
+            console.log("Ok clicked")
+        }
+        onRejected:{
+            console.log("Cancel clicked")
+        }
+    }
     Component{
         id: pageList
         ListPage{}
@@ -164,13 +179,80 @@ GridLayout {
     }
     //Reset DB
     Button{
+        id: btVisible
+        width: 10
+        height: 10
+        Layout.fillWidth: parent
+        Layout.fillHeight: parent
+        Layout.columnSpan: 2
+        visible: true
+
+        icon.width: 32
+        icon.height: 32
+        icon.color: "transparent"
+        icon.source: "icons/eye"
+
+
+        background: Rectangle {
+            implicitWidth: 20
+            implicitHeight: 20
+            color: btVisible.pressed ? "#4E3C2B" : btVisible.hovered ? "#B8916A" : "#BBA68D"
+        }
+        onClicked: {
+            btResetDB.visible = true
+            btNoVisible.visible = true
+
+            btVisible.visible = false
+        }
+
+    }
+    Button{
+        id: btResetDB
+        width: 32
+        height: 32
+        Layout.fillWidth: parent
+        Layout.fillHeight: parent
+        visible: false
+
+
+        icon.width: 32
+        icon.height: 32
+        icon.color: "transparent"
+        icon.source: "icons/trash"
+
+        background: Rectangle {
+            implicitWidth: 20
+            implicitHeight: 20
+            color: btResetDB.pressed ? "#4E3C2B" : btResetDB.hovered ? "#B8916A" : "#72583F"
+        }
+        onClicked: {
+            dialog.open()
+        }
+    }
+    Button{
+        id: btNoVisible
         width: 20
         height: 20
         Layout.fillWidth: parent
         Layout.fillHeight: parent
         visible: false
-        onClicked: {
-            dateBaseCust.deleteFileClick()
+
+        icon.width: 32
+        icon.height: 32
+        icon.color: "transparent"
+        icon.source: "icons/eye-crossed"
+
+
+        background: Rectangle {
+            implicitWidth: 20
+            implicitHeight: 20
+            color: btNoVisible.pressed ? "#4E3C2B" : btNoVisible.hovered ? "#B8916A" : "#F2E0C8"
         }
+        onClicked: {
+            btResetDB.visible = false
+            btNoVisible.visible = false
+            btVisible.visible = true
+        }
+
     }
 }

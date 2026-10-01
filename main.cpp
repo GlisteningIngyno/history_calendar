@@ -48,23 +48,24 @@ int main(int argc, char *argv[])
     int mmTuesday = dateDay.month();
     int ddTuesday = dateDay.day();
 
-
     QString numberYear = QString::fromStdString(std::to_string(yyTuesday));
     QString numberMonth = QString::fromStdString(std::to_string(mmTuesday));
     QString result = "ПУСТO";
     if(settings.contains(numberMonth)){
         result = settings[numberMonth].toString()+" "+numberYear;
     }
-    // engine.rootContext()->setContextProperty("txtDayComp", ddTuesday);
-    // engine.rootContext()->setContextProperty("txtYearComp", result);
 
-    engine.rootContext()->setContextProperty("txtDayComp", ddTuesday);
-    engine.rootContext()->setContextProperty("txtYearComp", "сентябрь 1922");
+    QString tDdTuesday = QString::fromStdString(std::to_string(ddTuesday));
+    if(ddTuesday < 10){
+        tDdTuesday = "0"+QString::fromStdString(std::to_string(ddTuesday));
+    }
+
+    engine.rootContext()->setContextProperty("txtDayComp", tDdTuesday);
+    engine.rootContext()->setContextProperty("txtYearComp", result);
 
     initDatabase();
     QDate dateYesterday(yyTuesday,mmTuesday,ddTuesday);
-    //QString eventStr = printEventDateBase(dateYesterday.toString("yyyy-MM-dd"));
-    QString eventStr = printEventDateBase("1922-09-29");
+    QString eventStr = printEventDateBase(dateYesterday.toString("yyyy-MM-dd"));
 
     engine.rootContext()->setContextProperty("txtEventDateComp",eventStr);
 
