@@ -44,7 +44,7 @@ Item {
             Text {
                 id: txtDataPriew
                 text: "Дата: "
-                font.pixelSize: 15
+                font.pixelSize: 20
                 font.family: electrolize.name
                 font.weight: Font.Normal
 
@@ -54,7 +54,7 @@ Item {
             Text {
                 id: txtDataValue
                 text: root.txtDataVal
-                font.pixelSize: 15
+                font.pixelSize: 20
                 font.family: electrolize.name
                 font.weight: Font.Normal
 
@@ -64,7 +64,7 @@ Item {
         Text {
             id: txtEventPriew
             text: "Событие: "
-            font.pixelSize: 15
+            font.pixelSize: 20
             font.family: electrolize.name
             font.weight: Font.Normal
             Layout.fillWidth: true
@@ -75,7 +75,7 @@ Item {
         Text {
             id: txtEventValue
             text: root.txtEventVal
-            font.pixelSize: 15
+            font.pixelSize: 20
             font.family: electrolize.name
             font.weight: Font.Normal
             wrapMode: Text.Wrap

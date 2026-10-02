@@ -34,8 +34,10 @@ qt_add_qml_module(appHistoryProject2
         icons/eye.svg
         icons/pencil.svg
         icons/trash.svg
+        icons/checkmark.svg
         QML_FILES ListPage.qml
         QML_FILES ItemPage.qml
+        QML_FILES AddDelPage.qml
 
 )
 

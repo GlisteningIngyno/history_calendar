@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
     QDate dateYesterday(yyTuesday,mmTuesday,ddTuesday);
     QString eventStr = printEventDateBase(dateYesterday.toString("yyyy-MM-dd"));
 
+    engine.rootContext()->setContextProperty("txtFullDate",dateYesterday.toString("yyyy-MM-dd"));
     engine.rootContext()->setContextProperty("txtEventDateComp",eventStr);
 
     engine.load(url);

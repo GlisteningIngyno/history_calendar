@@ -46,10 +46,15 @@ GridLayout {
             console.log("Cancel clicked")
         }
     }
+    AddDelPage{
+        id: addDelPage1
+    }
+
+
+
     Component{
         id: pageList
         ListPage{}
-
     }
 
     columns: 2
@@ -116,6 +121,10 @@ GridLayout {
             implicitHeight: 20
             color: btAddEvent2.pressed ? "#4E3C2B" : btAddEvent2.hovered ? "#B8916A" : "#72583F"
         }
+        onClicked: {
+            addDelPage1.addOrDelete = true
+            stackViewTop.push(addDelPage1)
+        }
     }
     Button {
         id: btDeleteEvent2
@@ -134,6 +143,12 @@ GridLayout {
             implicitHeight: 20
             color: btDeleteEvent2.pressed ? "#4E3C2B" : btDeleteEvent2.hovered ? "#B8916A" : "#F2E0C8"
         }
+        onClicked: {
+            addDelPage1.addOrDelete = false
+
+            stackViewTop.push(addDelPage1)
+        }
+
     }
     Button {
         id: btImportFile
@@ -253,6 +268,10 @@ GridLayout {
             btNoVisible.visible = false
             btVisible.visible = true
         }
+    }
+    Component.onCompleted: {
+        addDelPage1.visible = false
+
 
     }
 }

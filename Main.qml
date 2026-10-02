@@ -8,7 +8,7 @@ ApplicationWindow {
     height: 500
     visible: true
     title: qsTr("History Сalendar")
-    color: "#F2E0C8"
+    color: "#F2E0C8"    
     StackView {
         id: stackViewTop
         anchors.fill: parent
@@ -18,6 +18,10 @@ ApplicationWindow {
         id: electrolize
         source: "fonts/Electrolize-Regular.ttf"
     }
+    ItemPage{
+        id:tempItemPage
+    }
+
     Component {
         id: mainPage
         ColumnLayout {
@@ -75,38 +79,78 @@ ApplicationWindow {
                 Layout.fillHeight: parent
                 Text {
                     id: txtEventDay
-                    text: qsTr("Событие дня")
+                    text: qsTr("Событие дня: ")
                     font.pixelSize: 15
                     font.family: electrolize.name
                     font.weight: Font.Normal
 
                     Layout.leftMargin: 30
                 }
-                Text {
-                    id: txtEventText
-                    text: txtEventDateComp
-
-                    font.pixelSize: 15
-                    font.family: electrolize.name
-                    font.weight: Font.Normal
-                    font.underline: true
-
-                    wrapMode: Text.Wrap
+                Button{
+                    width: 50
+                    height: 50
                     Layout.fillWidth: parent
                     Layout.leftMargin: 45
                     Layout.rightMargin: 15
+                    Layout.bottomMargin: 10
+
+                    background: Rectangle{
+                        //border.color: "black"
+                        color:"transparent"
+                        implicitWidth: 50
+                        implicitHeight: 25
+                        Text {
+                            id: txtEventText
+                            text: txtEventDateComp
+                            anchors.fill: parent
+                            width: parent.width
+
+                            font.pixelSize: 15
+                            font.family: electrolize.name
+                            font.weight: Font.Normal
+                            font.underline: true
+                            //wrapMode: Text.Wrap
+                            elide: Text.ElideRight
+                        }
+                    }
+                    onClicked: {
+                        tempItemPage.txtDataVal = txtFullDate
+                        tempItemPage.txtEventVal = txtEventDateComp
+                        stackViewTop.push(tempItemPage)
+                    }
 
                 }
-                //Переделать в кнопку
-                Text {
-                    id: txtEventMore
-                    text: qsTr("Больше событий...")
-                    font.pixelSize: 15
-                    font.family: electrolize.name
-                    font.weight: Font.Normal
 
+                Button{
+                    width: 50
+                    height: 50
+                    Layout.fillWidth: parent
                     Layout.leftMargin: 30
+                    Layout.rightMargin: 15
+                    Layout.bottomMargin: 10
+
+                    background: Rectangle{
+                        color:"transparent"
+                        implicitWidth: 50
+                        implicitHeight: 25
+                        Text {
+                            id: txtEventMore
+                            text: qsTr("Больше событий...")
+
+                            anchors.fill: parent
+                            width: parent.width
+
+                            font.pixelSize: 15
+                            font.family: electrolize.name
+                            font.weight: Font.Normal
+                        }
+                    }
+                    onClicked: {
+                        stackViewTop.push(pageList)
+                    }
+
                 }
+
             }
             //Нижняя панель
             GridLayout {
@@ -159,10 +203,19 @@ ApplicationWindow {
                     color: "black"
                 }
             }
+            Component.onCompleted: {
+                tempItemPage.visible = false
+            }
         }
+
     }
     Component {
         id: pageSettings
         SettingPage {}
     }
+    Component {
+        id: pageList
+        ListPage {}
+    }
+
 }

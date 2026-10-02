@@ -15,6 +15,10 @@ Item {
     ItemPage {
         id: itemPageTemp
     }
+    FontLoader {
+        id: electrolize
+        source: "fonts/Electrolize-Regular.ttf"
+    }
     ColumnLayout{
         anchors.fill: parent
         RowLayout{
@@ -85,8 +89,6 @@ Item {
                     txtFieldSearch.visible = false
                     btCross.visible = false
 
-
-
                     dateBaseCreate.printTableDB()
 
                 }
@@ -99,7 +101,8 @@ Item {
                 color: "black"
                 wrapMode: Text.NoWrap
                 clip: true
-                font.pixelSize: 15
+                font.pixelSize: 16
+                font.family: electrolize.name
                 font.weight: Font.Normal
 
                 Layout.fillWidth: parent
@@ -160,6 +163,8 @@ Item {
                                 text: model.date
                                 font.pixelSize: 16
                                 color: "#1a1a1a"
+                                font.family: electrolize.name
+                                font.weight: Font.Normal
                                 Layout.alignment: Qt.AlignVCenter
                             }
                             Text {
@@ -167,6 +172,8 @@ Item {
                                 font.pixelSize: 16
                                 color: "#1a1a1a"
                                 elide: Text.ElideRight
+                                font.family: electrolize.name
+                                font.weight: Font.Normal
                                 Layout.fillWidth: true
                                 Layout.alignment: Qt.AlignVCenter
                             }
