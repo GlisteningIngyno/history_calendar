@@ -33,7 +33,7 @@ GridLayout {
     }
     Dialog {
         id: dialog
-        title: "Вы, уверены?"
+        title: "Удалить все данные?"
         standardButtons: Dialog.Ok | Dialog.Cancel
 
         anchors.centerIn: parent

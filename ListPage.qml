@@ -217,6 +217,7 @@ Item {
                }
         }
         Component.onCompleted: {
+            itemPageTemp.visible = false
             dateBaseCreate.printTableDB()
         }
     }

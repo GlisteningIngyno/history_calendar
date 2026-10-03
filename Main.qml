@@ -136,10 +136,8 @@ ApplicationWindow {
                         Text {
                             id: txtEventMore
                             text: qsTr("Больше событий...")
-
                             anchors.fill: parent
                             width: parent.width
-
                             font.pixelSize: 15
                             font.family: electrolize.name
                             font.weight: Font.Normal
@@ -158,7 +156,7 @@ ApplicationWindow {
                 rows: 2
                 columnSpacing: 60
                 Layout.leftMargin: 30
-                TextField {
+                Text {
                     width: 260
                     height: 25
                     text: "Создать событие"
@@ -168,20 +166,14 @@ ApplicationWindow {
                     color: "black"
                     wrapMode: Text.NoWrap
                     clip: true
-
-                    background: Rectangle {
-                        implicitWidth: 160
-                        implicitHeight: 25
-                        color: "transparent"
-                    }
                 }
                 Button {
                     id: btAddEvent
-                    width: 20
-                    height: 20
+                    width: 40
+                    height: 40
                     background: Rectangle {
-                        implicitWidth: 20
-                        implicitHeight: 20
+                        implicitWidth: 35
+                        implicitHeight: 35
                         radius: 50
                         border.color: "black"
                         color: btAddEvent.pressed ? "#4E3C2B" : btAddEvent.hovered ? "#B8916A" : "transparent"
@@ -189,10 +181,13 @@ ApplicationWindow {
                             anchors.centerIn: parent
                             id: txtBtAddEvent
                             text: qsTr("+")
-                            font.pixelSize: 30
+                            font.pixelSize: 35
                             font.family: electrolize.name
                             font.weight: Font.Normal
                         }
+                    }
+                    onClicked: {
+                        stackViewTop.push(pageAddDel)
                     }
                 }
                 Rectangle {
@@ -203,6 +198,7 @@ ApplicationWindow {
                     color: "black"
                 }
             }
+
             Component.onCompleted: {
                 tempItemPage.visible = false
             }
@@ -216,6 +212,10 @@ ApplicationWindow {
     Component {
         id: pageList
         ListPage {}
+    }
+    Component{
+        id: pageAddDel
+        AddDelPage{}
     }
 
 }

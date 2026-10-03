@@ -19,7 +19,13 @@ QString printEventDateBase(QString dateYesterday);
 
 int main(int argc, char *argv[])
 {
+
+
     QGuiApplication app(argc, argv);
+    app.setOrganizationName("GlisteningIngyno");              // имя компании
+    app.setOrganizationDomain("github.com");       // домен компании
+    app.setApplicationName("Test Application");     // имя приложения
+    app.setApplicationVersion("1.0.0");             // версия приложения
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/HistoryProject2/Main.qml"));
