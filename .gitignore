@@ -1,1 +1,5 @@
 build/
+build/
+build-*/
+CMakeLists.txt.user
+my-repo-backup.git/
